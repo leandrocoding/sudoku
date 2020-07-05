@@ -72,9 +72,19 @@ def checksquare(num, row, col, bo):
     return True
 
 
+def solutioncounter(bo, debug=False):
+    solutions = []
+    solve(bo, sols=solutions)
+    print(f"There were {len(solutions)} solutions")
+
+    if debug:
+
+        for solu in solutions:
+            print("\n")
+            print(np.matrix(solu))
 
 
-def solve(bo, sols=None):
+def solve(bo, sols):
 
     for row in range(0, basesize**2):
         for col in range(0, basesize**2):
@@ -83,18 +93,15 @@ def solve(bo, sols=None):
                 for n in range(1, basesize**2+1):
                     if check(n, row, col, bo):
                         bo[row][col] = n
-                        solve(bo)
+                        solve(bo, sols)
                         bo[row][col] = 0
                 return
 
-    if sols == None:
-        print("\n")
-        print(np.matrix(bo))
-        input("More?")
-    else:
-        sols.append(bo)
+    sols.append(bo)
 
 
+
+# Testing
 print(np.matrix(board2))
 
-solve(board2)
+solutioncounter(board2)
