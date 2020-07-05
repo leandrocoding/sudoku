@@ -45,6 +45,10 @@ board2 = [
 
 temp = []
 
+possibleNumbers = []
+for i in range(basesize**2+1):
+    possibleNumbers.append(i)
+
 
 # Checking if it is possible to put a number at a certain point.
 
@@ -82,25 +86,27 @@ def checksquare(num, row, col, bo):
 def solutioncounter(bo, debug=False):
     solutions = []
     solve(bo, sols=solutions)
-    if len(solutions) == 1:
-        print("There was a unique solution!")
-    else:
-        print(f"\nThere were {len(solutions)} solutions")
 
     if debug:
+        if len(solutions) == 1:
+            print("There was a unique solution!")
+        else:
+            print(f"\nThere were {len(solutions)} solutions")
 
         for solu in solutions:
             print("\n")
             print(np.matrix(solu))
 
+    return solutions
 
-def solve(bo, sols=temp, testuni=False):
+
+def solve(bo, sols=temp, showSolu=True):
 
     for row in range(0, basesize**2):
         for col in range(0, basesize**2):
             # Find empty field
             if bo[row][col] == 0:
-            
+
                 for n in range(1, basesize**2+1):
                     if check(n, row, col, bo):
                         bo[row][col] = n
@@ -114,20 +120,11 @@ def solve(bo, sols=temp, testuni=False):
 
     sols.append(bo)
 
-    if len(sols) > 1:
+    if len(sols) > 1 and not showSolu:
         return "FINITO"
 
 
-def solvable(bo):
-    solus = []
-    solve(board2, sols=solus, testuni=True)
-    if len(solus) == 0:
-        return False
-    else:
-        return True
-
-
-def solved(bo):
+def isSolved(bo):
     for row in range(basesize**2):
         for col in range(basesize**2):
             if bo[row][col] == 0:
@@ -135,65 +132,85 @@ def solved(bo):
     return True
 
 
+def gen(grid, seed=None):
+    if seed == None:
+        seed = random.randint(1, 100000000000000000000)
+
+    for i in range(0, basesize**4):
+        row = i//(basesize**2)
+        col = i % (basesize**2)
+        if grid[row][col] == 0:
+            random.seed(a=seed+575+67*i)
+            random.shuffle(possibleNumbers)
+            for num in possibleNumbers:
+                if check(num, row, col, grid):
+                    grid[row][col] = num
+                    if isSolved(grid):
+                        return True
+                    elif gen(grid, seed+10):
+                        return True
+            break
+    grid[row][col] = 0
+
+
+def removeFields(grid, count=15, seed=None):
+    if seed == None:
+        seed = random.randint(1, 100000000000000000000)
+    for i in range(0, count):
+
+        # random.seed(a=seed+825+20*i)
+        # pos = random.randint(1, basesize**4)
+        # row = i//(basesize**2)
+        # col = i % (basesize**2)
+        # print(f"Pos:{pos} \nRow:{row} \nCol:{col}")
+
+        random.seed(a=seed+175+57*i)
+        row = random.randint(0, basesize**2-1)
+        random.seed(a=seed+695+13*i)
+        col = random.randint(0, basesize**2-1)
+        if grid[row][col] != 0:
+            backup = grid[row][col]
+            grid[row][col] = 0
+            # print(grid)
+
+            gridCopy = copy.deepcopy(grid)
+            if len(solutioncounter(gridCopy)) != 1:
+                grid[row][col] = backup
+                print("Used backup")
+
+
 def isUnique(bo):
     solus = []
-    solve(board2, sols=solus, testuni=True)
+    solve(board2, sols=solus)
     if len(solus) == 1:
         return True
     else:
         return False
 
 
-def generateSudoku(seed=None):
-    if seed == None:
-        seed = random.randint(1, 100000000000000000000)
-
+def generateFull(seed=None, count=35, debug=False):
     grid = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
-
-    i = 14
-    gSudoku(seed, grid, i)
-    if solved(grid):
-        return grid
+    gen(grid, seed=seed)
+    removeFields(grid, count=count, seed=seed)
+    return grid
 
 
-def gSudoku(seed, grid, i):
+# #
+generatedField = generateFull()
+print(np.matrix(generatedField))
+# print("\n")
+# solve(generatedField)
+# solutioncounter(generatedField, debug=True)
 
-    random.seed(a=seed+135+57*i)
-    row = random.randint(0, basesize**2-1)
-    random.seed(a=seed+655+13*i)
-    col = random.randint(0, basesize**2-1)
-    random.seed(a=seed+575+67*i)
-    num = random.randint(1, basesize**2)
-    if grid[row][col] == 0:
-        if check(num, row, col, grid):
-            grid[row][col] = num
-            if not solvable(grid):
-                grid[row][col] = 0
-            print(np.matrix(grid))
-            gSudoku(seed, grid, i+3)
-            # grid[row][col] = 0
-        return
-    if solved(grid):
-        return grid
-    gSudoku(seed, grid, i+3)
-    # if not solvable(grid):
-    #     print("Not solvable")
+# example = [[4, 9, 6, 0, 5, 3, 0, 7, 0],
+#            [5, 1, 2, 9, 7, 4, 0, 0, 8],
+#            [7, 0, 0, 2, 1, 0, 0, 0, 5],
+#            [3, 0, 0, 4, 0, 7, 2, 0, 0],
+#            [6, 2, 7, 0, 8, 5, 0, 3, 4],
+#            [1, 0, 5, 0, 2, 0, 0, 0, 6],
+#            [0, 0, 0, 5, 4, 8, 6, 2, 3],
+#            [0, 5, 0, 0, 9, 1, 0, 0, 7],
+#            [8, 6, 0, 7, 3, 0, 5, 1, 9]]
 
-
-    # Testing
-temp = generateSudoku(1243132413)
-print(np.matrix(temp))
-# solutioncounter(temp)
-
-# if solve(board2, sols=solus, testuni=True) == "FINITO":
-#     print(f"More than one Solution found")
-# print(more)
-
-
-# solutioncounter(board)
-
-# grid2 = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
-# print(np.matrix(grid2))
-# print(np.matrix(board))
-
-# solutioncounter(grid2)
+# solutioncounter(example, debug=True)
+# print(np.matrix(generatedField))
