@@ -62,7 +62,17 @@ def check(num, row, col, bo):
         if num == bo[i][col]:
             return False
     # Check Square
-    return checksquare(num, row, col, bo)
+    if not checksquare(num, row, col, bo):
+        return False
+    if not checkknightsmove(num, row, col, bo):
+        return False
+    if not checkkingsmove(num, row, col, bo):
+        return False
+    if not checkadjacent(num, row, col, bo):
+        return False
+    
+        
+    
 
     return True
 
@@ -81,6 +91,157 @@ def checksquare(num, row, col, bo):
             if bo[roww][coll] == num:
                 return False
     return True
+# Advanced Checking
+def checkknightsmove(num, row, col, bo):
+    # up right
+    try:
+        if bo[row-2][col+1]==num:
+            return False
+    except:
+        pass
+
+     # up left
+    try:
+        if bo[row-2][col-1]==num:
+            return False
+    except:
+        pass
+     # down right
+    try:
+        if bo[row+2][col+1]==num:
+            return False
+    except:
+        pass
+
+     # down left
+    try:
+        if bo[row-2][col-1]==num:
+            return False
+    except:
+        pass
+
+     # right up
+    try:
+        if bo[row-1][col+2]==num:
+            return False
+    except:
+        pass
+
+     # right down
+    try:
+        if bo[row+1][col+2]==num:
+            return False
+    except:
+        pass
+    # left up
+    try:
+        if bo[row-1][col-2]==num:
+            return False
+    except:
+        pass
+
+     # left down
+    try:
+        if bo[row+1][col-2]==num:
+            return False
+    except:
+        pass
+    return True
+    
+
+
+def checkkingsmove(num, row, col, bo):
+    # up
+    try:
+        if bo[row-1][col]==num:
+            return False
+    except:
+        pass
+    # down
+    try:
+        if bo[row+1][col]==num:
+            return False
+    except:
+        pass
+    # right
+    try:
+        if bo[row][col+1]==num:
+            return False
+    except:
+        pass
+    # left
+    try:
+        if bo[row][col-1]==num:
+            return False
+    except:
+        pass
+    return True
+    
+
+
+def checkadjacent(num, row, col, bo):
+    # up
+    try:
+        pos=bo[row-1][col]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    # down
+    try:
+        pos=bo[row+1][col]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    # up right
+    try:
+        pos=bo[row-1][col+1]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    # up left
+    try:
+        pos=bo[row-1][col-1]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    # down right
+    try:
+        pos=bo[row+1][col+1]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    # down left
+    try:
+        pos=bo[row+1][col-1]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    # right
+    try:
+        pos=bo[row][col+1]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    # left
+    try:
+        pos=bo[row][col-1]
+        if pos==num+1 or (pos==num-1 and num-1!=0):
+            return False
+    except:
+        pass
+    return True
+
+    
+            
+        
+
 
 
 def solutioncounter(bo, debug=False):
@@ -107,7 +268,9 @@ def solve(bo, sols=None):
                 for n in range(1, basesize**2+1):
                     if check(n, row, col, bo):
                         bo[row][col] = n
+                        print("Go deeper")
                         solve(bo,sols)
+                        print("Getting back out")
                         bo[row][col] = 0
                 return
 
@@ -174,7 +337,17 @@ def generateSudoku(seed=None, count=35, debug=False):
     removeFields(grid, count=count, seed=seed)
     return grid
 
-exp = generateSudoku()
-print(np.matrix(exp))
-solutioncounter(exp,debug=True)
+magic= [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 2, 0, 1, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 2, 0],
+        [0, 0, 0, 2, 0, 1, 0, 0, 0],
+        [2, 0, 1, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 2, 0, 1],
+        [0, 0, 2, 0, 1, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 2],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+# exp = generateSudoku()
+# print(np.matrix(exp))
+solutioncounter(magic,debug=True)
 
