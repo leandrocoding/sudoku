@@ -1,5 +1,8 @@
 import math
 import numpy as np
+import random
+import copy
+import inspect
 
 
 # Dimensions of the board variable?
@@ -40,8 +43,12 @@ board2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
+temp = []
+
 
 # Checking if it is possible to put a number at a certain point.
+
+
 def check(num, row, col, bo):
     # Check Row
     if num in bo[row]:
@@ -75,7 +82,10 @@ def checksquare(num, row, col, bo):
 def solutioncounter(bo, debug=False):
     solutions = []
     solve(bo, sols=solutions)
-    print(f"There were {len(solutions)} solutions")
+    if len(solutions) == 1:
+        print("There was a unique solution!")
+    else:
+        print(f"\nThere were {len(solutions)} solutions")
 
     if debug:
 
@@ -84,24 +94,106 @@ def solutioncounter(bo, debug=False):
             print(np.matrix(solu))
 
 
-def solve(bo, sols):
+def solve(bo, sols=temp, testuni=False):
 
     for row in range(0, basesize**2):
         for col in range(0, basesize**2):
             # Find empty field
             if bo[row][col] == 0:
+            
                 for n in range(1, basesize**2+1):
                     if check(n, row, col, bo):
                         bo[row][col] = n
-                        solve(bo, sols)
+                        if solve(bo, sols) == "FINITO":
+                            return "FINITO"
                         bo[row][col] = 0
+                # print(len(inspect.stack(0)))
+                # if len(inspect.stack(0)) >= 40:
+                #     return "FINITO"
                 return
 
     sols.append(bo)
 
+    if len(sols) > 1:
+        return "FINITO"
 
 
-# Testing
-print(np.matrix(board2))
+def solvable(bo):
+    solus = []
+    solve(board2, sols=solus, testuni=True)
+    if len(solus) == 0:
+        return False
+    else:
+        return True
 
-solutioncounter(board2)
+
+def solved(bo):
+    for row in range(basesize**2):
+        for col in range(basesize**2):
+            if bo[row][col] == 0:
+                return False
+    return True
+
+
+def isUnique(bo):
+    solus = []
+    solve(board2, sols=solus, testuni=True)
+    if len(solus) == 1:
+        return True
+    else:
+        return False
+
+
+def generateSudoku(seed=None):
+    if seed == None:
+        seed = random.randint(1, 100000000000000000000)
+
+    grid = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
+
+    i = 14
+    gSudoku(seed, grid, i)
+    if solved(grid):
+        return grid
+
+
+def gSudoku(seed, grid, i):
+
+    random.seed(a=seed+135+57*i)
+    row = random.randint(0, basesize**2-1)
+    random.seed(a=seed+655+13*i)
+    col = random.randint(0, basesize**2-1)
+    random.seed(a=seed+575+67*i)
+    num = random.randint(1, basesize**2)
+    if grid[row][col] == 0:
+        if check(num, row, col, grid):
+            grid[row][col] = num
+            if not solvable(grid):
+                grid[row][col] = 0
+            print(np.matrix(grid))
+            gSudoku(seed, grid, i+3)
+            # grid[row][col] = 0
+        return
+    if solved(grid):
+        return grid
+    gSudoku(seed, grid, i+3)
+    # if not solvable(grid):
+    #     print("Not solvable")
+
+
+    # Testing
+temp = generateSudoku(1243132413)
+print(np.matrix(temp))
+# solutioncounter(temp)
+
+# if solve(board2, sols=solus, testuni=True) == "FINITO":
+#     print(f"More than one Solution found")
+# print(more)
+
+
+# solutioncounter(board)
+
+# grid2 = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
+# print(np.matrix(grid2))
+# print(np.matrix(board))
+
+# solutioncounter(grid2)
