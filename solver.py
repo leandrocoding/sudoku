@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 # Dimensions of the board variable?
@@ -14,6 +15,7 @@ import math
 basesize = 3
 
 # A board is defined as Colloms in Rows.   x=col y=row cords are in the format bo [row][col] or bo[y][x]
+# A "0" stands dor empty.
 board = [
     [7, 8, 0, 4, 0, 0, 1, 2, 0],
     [6, 0, 0, 0, 7, 5, 0, 0, 9],
@@ -26,6 +28,18 @@ board = [
     [0, 4, 9, 2, 0, 6, 0, 0, 7]
 ]
 
+board2 = [
+    [7, 8, 0, 4, 0, 0, 1, 2, 0],
+    [6, 0, 0, 0, 7, 5, 0, 0, 9],
+    [0, 0, 0, 6, 0, 1, 0, 7, 8],
+    [0, 0, 7, 0, 4, 0, 2, 6, 0],
+    [0, 0, 1, 0, 5, 0, 9, 3, 0],
+    [9, 0, 4, 0, 6, 0, 0, 0, 5],
+    [0, 7, 0, 3, 0, 0, 0, 1, 2],
+    [1, 0, 0, 0, 0, 7, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+]
+
 
 # Checking if it is possible to put a number at a certain point.
 def check(num, row, col, bo):
@@ -33,7 +47,7 @@ def check(num, row, col, bo):
     if num in bo[row]:
         return False
     # Check Col
-    for i in range(0, (basesize ** 2) - 1):
+    for i in range(0, (basesize ** 2)):
         if num == bo[i][col]:
             return False
     # Check Square
@@ -47,7 +61,7 @@ def checksquare(num, row, col, bo):
     squarecol = math.floor(col/3)
     rows = []
     cols = []
-    for i in range(0, basesize-1):
+    for i in range(0, basesize):
         rows.append(squarerow*basesize + i)
         cols.append(squarecol*basesize + i)
 
@@ -56,3 +70,31 @@ def checksquare(num, row, col, bo):
             if bo[roww][coll] == num:
                 return False
     return True
+
+
+
+
+def solve(bo, sols=None):
+
+    for row in range(0, basesize**2):
+        for col in range(0, basesize**2):
+            # Find empty field
+            if bo[row][col] == 0:
+                for n in range(1, basesize**2+1):
+                    if check(n, row, col, bo):
+                        bo[row][col] = n
+                        solve(bo)
+                        bo[row][col] = 0
+                return
+
+    if sols == None:
+        print("\n")
+        print(np.matrix(bo))
+        input("More?")
+    else:
+        sols.append(bo)
+
+
+print(np.matrix(board2))
+
+solve(board2)
