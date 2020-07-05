@@ -1,5 +1,8 @@
 import math
 import numpy as np
+import random
+import copy
+import inspect
 
 
 # Dimensions of the board variable?
@@ -40,8 +43,16 @@ board2 = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
+temp = []
+
+possibleNumbers = []
+for i in range(basesize**2+1):
+    possibleNumbers.append(i)
+
 
 # Checking if it is possible to put a number at a certain point.
+
+
 def check(num, row, col, bo):
     # Check Row
     if num in bo[row]:
@@ -75,33 +86,131 @@ def checksquare(num, row, col, bo):
 def solutioncounter(bo, debug=False):
     solutions = []
     solve(bo, sols=solutions)
-    print(f"There were {len(solutions)} solutions")
 
     if debug:
+        if len(solutions) == 1:
+            print("There was a unique solution!")
+        else:
+            print(f"\nThere were {len(solutions)} solutions")
 
         for solu in solutions:
             print("\n")
             print(np.matrix(solu))
 
+    return solutions
 
-def solve(bo, sols):
+
+def solve(bo, sols=temp, showSolu=True):
 
     for row in range(0, basesize**2):
         for col in range(0, basesize**2):
             # Find empty field
             if bo[row][col] == 0:
+
                 for n in range(1, basesize**2+1):
                     if check(n, row, col, bo):
                         bo[row][col] = n
-                        solve(bo, sols)
+                        if solve(bo, sols) == "FINITO":
+                            return "FINITO"
                         bo[row][col] = 0
+                # print(len(inspect.stack(0)))
+                # if len(inspect.stack(0)) >= 40:
+                #     return "FINITO"
                 return
 
     sols.append(bo)
 
+    if len(sols) > 1 and not showSolu:
+        return "FINITO"
 
 
-# Testing
-print(np.matrix(board2))
+def isSolved(bo):
+    for row in range(basesize**2):
+        for col in range(basesize**2):
+            if bo[row][col] == 0:
+                return False
+    return True
 
-solutioncounter(board2)
+
+def gen(grid, seed=None):
+    if seed == None:
+        seed = random.randint(1, 100000000000000000000)
+
+    for i in range(0, basesize**4):
+        row = i//(basesize**2)
+        col = i % (basesize**2)
+        if grid[row][col] == 0:
+            random.seed(a=seed+575+67*i)
+            random.shuffle(possibleNumbers)
+            for num in possibleNumbers:
+                if check(num, row, col, grid):
+                    grid[row][col] = num
+                    if isSolved(grid):
+                        return True
+                    elif gen(grid, seed+10):
+                        return True
+            break
+    grid[row][col] = 0
+
+
+def removeFields(grid, count=15, seed=None):
+    if seed == None:
+        seed = random.randint(1, 100000000000000000000)
+    for i in range(0, count):
+
+        # random.seed(a=seed+825+20*i)
+        # pos = random.randint(1, basesize**4)
+        # row = i//(basesize**2)
+        # col = i % (basesize**2)
+        # print(f"Pos:{pos} \nRow:{row} \nCol:{col}")
+
+        random.seed(a=seed+175+57*i)
+        row = random.randint(0, basesize**2-1)
+        random.seed(a=seed+695+13*i)
+        col = random.randint(0, basesize**2-1)
+        if grid[row][col] != 0:
+            backup = grid[row][col]
+            grid[row][col] = 0
+            # print(grid)
+
+            gridCopy = copy.deepcopy(grid)
+            if len(solutioncounter(gridCopy)) != 1:
+                grid[row][col] = backup
+                print("Used backup")
+
+
+def isUnique(bo):
+    solus = []
+    solve(board2, sols=solus)
+    if len(solus) == 1:
+        return True
+    else:
+        return False
+
+
+def generateFull(seed=None, count=35, debug=False):
+    grid = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
+    gen(grid, seed=seed)
+    removeFields(grid, count=count, seed=seed)
+    return grid
+
+
+# #
+generatedField = generateFull()
+print(np.matrix(generatedField))
+# print("\n")
+# solve(generatedField)
+# solutioncounter(generatedField, debug=True)
+
+# example = [[4, 9, 6, 0, 5, 3, 0, 7, 0],
+#            [5, 1, 2, 9, 7, 4, 0, 0, 8],
+#            [7, 0, 0, 2, 1, 0, 0, 0, 5],
+#            [3, 0, 0, 4, 0, 7, 2, 0, 0],
+#            [6, 2, 7, 0, 8, 5, 0, 3, 4],
+#            [1, 0, 5, 0, 2, 0, 0, 0, 6],
+#            [0, 0, 0, 5, 4, 8, 6, 2, 3],
+#            [0, 5, 0, 0, 9, 1, 0, 0, 7],
+#            [8, 6, 0, 7, 3, 0, 5, 1, 9]]
+
+# solutioncounter(example, debug=True)
+# print(np.matrix(generatedField))
