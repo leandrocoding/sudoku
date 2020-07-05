@@ -98,31 +98,26 @@ def solutioncounter(bo, debug=False):
             print(np.matrix(solu))
 
     return solutions
-
-
-def solve(bo, sols=temp, showSolu=True):
+def solve(bo, sols=None):
 
     for row in range(0, basesize**2):
         for col in range(0, basesize**2):
             # Find empty field
             if bo[row][col] == 0:
-
                 for n in range(1, basesize**2+1):
                     if check(n, row, col, bo):
                         bo[row][col] = n
-                        if solve(bo, sols) == "FINITO":
-                            return "FINITO"
+                        solve(bo,sols)
                         bo[row][col] = 0
-                # print(len(inspect.stack(0)))
-                # if len(inspect.stack(0)) >= 40:
-                #     return "FINITO"
                 return
 
-    sols.append(bo)
+    
+    
+    # print(np.matrix(bo))
+    sols.append(copy.deepcopy(bo))
 
-    if len(sols) > 1 and not showSolu:
-        return "FINITO"
 
+    
 
 def isSolved(bo):
     for row in range(basesize**2):
@@ -158,12 +153,7 @@ def removeFields(grid, count=15, seed=None):
         seed = random.randint(1, 100000000000000000000)
     for i in range(0, count):
 
-        # random.seed(a=seed+825+20*i)
-        # pos = random.randint(1, basesize**4)
-        # row = i//(basesize**2)
-        # col = i % (basesize**2)
-        # print(f"Pos:{pos} \nRow:{row} \nCol:{col}")
-
+        
         random.seed(a=seed+175+57*i)
         row = random.randint(0, basesize**2-1)
         random.seed(a=seed+695+13*i)
@@ -178,39 +168,13 @@ def removeFields(grid, count=15, seed=None):
                 grid[row][col] = backup
                 print("Used backup")
 
-
-def isUnique(bo):
-    solus = []
-    solve(board2, sols=solus)
-    if len(solus) == 1:
-        return True
-    else:
-        return False
-
-
-def generateFull(seed=None, count=35, debug=False):
+def generateSudoku(seed=None, count=35, debug=False):
     grid = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
     gen(grid, seed=seed)
     removeFields(grid, count=count, seed=seed)
     return grid
 
+exp = generateSudoku()
+print(np.matrix(exp))
+solutioncounter(exp,debug=True)
 
-# #
-generatedField = generateFull()
-print(np.matrix(generatedField))
-# print("\n")
-# solve(generatedField)
-# solutioncounter(generatedField, debug=True)
-
-# example = [[4, 9, 6, 0, 5, 3, 0, 7, 0],
-#            [5, 1, 2, 9, 7, 4, 0, 0, 8],
-#            [7, 0, 0, 2, 1, 0, 0, 0, 5],
-#            [3, 0, 0, 4, 0, 7, 2, 0, 0],
-#            [6, 2, 7, 0, 8, 5, 0, 3, 4],
-#            [1, 0, 5, 0, 2, 0, 0, 0, 6],
-#            [0, 0, 0, 5, 4, 8, 6, 2, 3],
-#            [0, 5, 0, 0, 9, 1, 0, 0, 7],
-#            [8, 6, 0, 7, 3, 0, 5, 1, 9]]
-
-# solutioncounter(example, debug=True)
-# print(np.matrix(generatedField))
