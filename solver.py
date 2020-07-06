@@ -3,6 +3,7 @@ import numpy as np
 import random
 import copy
 import inspect
+from config import basesize
 
 
 # Dimensions of the board variable?
@@ -14,8 +15,8 @@ import inspect
 # large Sudoku: inner field 4x4 outer field 16x16 or made out of 4x4 of the inner field.
 
 
-# The size of the inner field
-basesize = 3
+# # The size of the inner field
+# basesize = 3
 
 # A board is defined as Colloms in Rows.   x=col y=row cords are in the format bo [row][col] or bo[y][x]
 # A "0" stands dor empty.
