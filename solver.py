@@ -68,8 +68,8 @@ def check(num, row, col, bo):
 
 
 def checksquare(num, row, col, bo):
-    squarerow = math.floor(row/3)
-    squarecol = math.floor(col/3)
+    squarerow = math.floor(row/basesize)
+    squarecol = math.floor(col/basesize)
     rows = []
     cols = []
     for i in range(0, basesize):
