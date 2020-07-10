@@ -3,7 +3,8 @@ import numpy as np
 import random
 import copy
 import inspect
-from config import basesize
+from time import sleep
+from config import basesize, currGrid, solving, sleeptime
 
 
 # Dimensions of the board variable?
@@ -13,7 +14,6 @@ from config import basesize
 # Normal sudoku inner Fileds: 3x3, outer field is made out of 3x3 of the inner fields
 # smaller Sudoku: inner field made out of 2X2 outer field is made of 2x2 of the outer field
 # large Sudoku: inner field 4x4 outer field 16x16 or made out of 4x4 of the inner field.
-
 
 
 # # The size of the inner field
@@ -85,9 +85,9 @@ def checksquare(num, row, col, bo):
     return True
 
 
-def solutioncounter(bo, debug=False):
+def solutioncounter(bo, debug=False, fast=False):
     solutions = []
-    solve(bo, sols=solutions)
+    solve(bo, sols=solutions, fast=fast)
 
     if debug:
         if len(solutions) == 1:
@@ -100,10 +100,17 @@ def solutioncounter(bo, debug=False):
         for solu in solutions:
             print("\n")
             print(np.matrix(solu))
-        
 
     return solutions
-def solve(bo, sols=None):
+
+
+def solve(bo, sols=None, fast=False):
+    sleeptimer = sleeptime
+    if fast:
+        sleeptimer = 0
+
+    global currGrid
+    currGrid = bo
 
     for row in range(0, basesize**2):
         for col in range(0, basesize**2):
@@ -112,17 +119,15 @@ def solve(bo, sols=None):
                 for n in range(1, basesize**2+1):
                     if check(n, row, col, bo):
                         bo[row][col] = n
-                        solve(bo,sols)
+                        # if showSteps:
+                        sleep(sleeptimer)
+                        solve(bo, sols)
                         bo[row][col] = 0
                 return
 
-    
-    
     # print(np.matrix(bo))
     sols.append(copy.deepcopy(bo))
 
-
-    
 
 def isSolved(bo):
     for row in range(basesize**2):
@@ -157,8 +162,8 @@ def removeFields(grid, count=15, seed=None):
     if seed == None:
         seed = random.randint(1, 100000000000000000000)
     for i in range(0, count):
+        print(f"Cycle {i+1}")
 
-        
         random.seed(a=seed+175+57*i)
         row = random.randint(0, basesize**2-1)
         random.seed(a=seed+695+13*i)
@@ -169,9 +174,10 @@ def removeFields(grid, count=15, seed=None):
             # print(grid)
 
             gridCopy = copy.deepcopy(grid)
-            if len(solutioncounter(gridCopy)) != 1:
+            if len(solutioncounter(gridCopy, fast=True)) != 1:
                 grid[row][col] = backup
                 print("Used backup")
+
 
 def generateSudoku(seed=None, count=35, debug=False):
     grid = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
@@ -179,7 +185,7 @@ def generateSudoku(seed=None, count=35, debug=False):
     removeFields(grid, count=count, seed=seed)
     return grid
 
-exp = generateSudoku()
-print(np.matrix(exp))
-solutioncounter(exp,debug=True)
 
+# exp = generateSudoku(count=250)
+# print(np.matrix(exp))
+# solutioncounter(exp,debug=True)
