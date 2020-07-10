@@ -1,6 +1,7 @@
 import pygame
 from config import basesize,resolutionField, spacebelowinPX, displayinHexa
-
+import sys
+from testGrids import grid9x9_1,grid16x16_1
 pygame.init()
 
 pygame.display.set_caption("Sudoku")
@@ -11,7 +12,7 @@ root = pygame.display.set_mode((resolutionField, resolutionField+spacebelowinPX)
 root.fill((250, 250, 250))
 running = True
 font = pygame.font.SysFont(None, resolutionField//basesize**2)
-selector_pos= [3,4] # (Row,Col)
+selector_pos= [0,0] # (Row,Col)
 
 def draw_field():
     for i in range(basesize**2+1):
@@ -24,6 +25,16 @@ def draw_field():
 
 
 def draw_num(grid):
+    if len(grid)!=basesize**2:
+        print(f"Expected Sudoku with side length {basesize**2}. Instead got a Sudoku with a side length of {len(grid)}")
+        print("Please check your config!")
+        print("Exiting now!")
+        running = False
+        pygame.quit()
+        sys.exit()
+        
+        return False
+
     for row in range(0,basesize**2):
         for col in range(0,basesize**2):
             num= grid[row][col]
@@ -47,13 +58,26 @@ def draw_selector():
 def move_selector(row_delta,col_delta):
     row_old=selector_pos[0]
     col_old=selector_pos[1]
-  
-    # TODO: FIX 
-    if(0<row_old-row_delta<basesize**2-2):
+ 
+    if(0<=row_old-row_delta<basesize**2):
         selector_pos[0]=row_old-row_delta
-    if(0<col_old-col_delta<basesize**2-2):
+    if(0<=col_old+col_delta<basesize**2):
         selector_pos[1]=col_old+col_delta
-    
+
+def setSelector(row,col):
+    selector_pos[0]=int(row)
+    selector_pos[1]=int(col)
+
+def mouseSelect():
+    pos = pygame.mouse.get_pos()
+    x_mouse = pos[0]
+    y_mouse = pos[1]
+    if y_mouse>resolutionField:
+        return 
+    col=x_mouse//(resolutionField//basesize**2)
+    row=y_mouse//(resolutionField//basesize**2)
+    setSelector(row,col)
+
 
 # Eventhandling
 
@@ -61,7 +85,7 @@ def eventHandler(event):
     if event.type == pygame.QUIT:
             running=False
             pygame.quit()
-            # sys.exit()
+            sys.exit()
     controlls(event)
 
 def controlls(event):
@@ -74,7 +98,9 @@ def controlls(event):
             move_selector(0,1)
         if event.key == pygame.K_LEFT:
             move_selector(0,-1)
-            
+    
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        mouseSelect()
 
     
 
@@ -88,18 +114,7 @@ def controlls(event):
             
         
                     
-board = [
-    [7, 8, 0, 4, 0, 0, 1, 2, 0],
-    [6, 0, 0, 0, 7, 5, 0, 0, 9],
-    [0, 0, 0, 6, 0, 1, 0, 7, 8],
-    [0, 0, 7, 0, 4, 0, 2, 6, 0],
-    [0, 0, 1, 0, 5, 0, 9, 3, 0],
-    [9, 0, 4, 0, 6, 0, 0, 0, 5],
-    [0, 7, 0, 3, 0, 0, 0, 1, 2],
-    [1, 2, 0, 0, 0, 7, 4, 0, 0],
-    [0, 4, 9, 2, 0, 6, 0, 0, 7]
-]                   
-                   
+        
 
 
 while running:
@@ -108,7 +123,7 @@ while running:
             
     root.fill((250, 250, 250))
     draw_field()
-    draw_num(board)
+    draw_num(grid16x16_1)
     draw_footer()
     draw_selector()
     pygame.display.update()
