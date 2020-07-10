@@ -92,12 +92,15 @@ def solutioncounter(bo, debug=False):
     if debug:
         if len(solutions) == 1:
             print("There was a unique solution!")
+        elif len(solutions) == 0:
+            print("There was no solution!")
         else:
             print(f"\nThere were {len(solutions)} solutions")
 
         for solu in solutions:
             print("\n")
             print(np.matrix(solu))
+        
 
     return solutions
 def solve(bo, sols=None):

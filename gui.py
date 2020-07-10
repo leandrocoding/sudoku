@@ -11,6 +11,7 @@ root = pygame.display.set_mode((resolutionField, resolutionField+spacebelowinPX)
 root.fill((250, 250, 250))
 running = True
 font = pygame.font.SysFont(None, resolutionField//basesize**2)
+selector_pos= [3,4] # (Row,Col)
 
 def draw_field():
     for i in range(basesize**2+1):
@@ -31,8 +32,59 @@ def draw_num(grid):
                     num=hex(num).split('x')[-1]
                 text = font.render(str(num), True, (0, 0, 0), (250, 250, 250))
                 textRe = text.get_rect()
-                textRect = textRe.move((row*resolutionField//(basesize**2)+(resolutionField//(basesize**3*1.1)), (col*resolutionField//(basesize**2)+(resolutionField//(basesize**3*2)))))
+                textRect = textRe.move((row*resolutionField//(basesize**2)+(int(resolutionField/(basesize**3*1.1))), (col*resolutionField//(basesize**2)+(resolutionField//(basesize**3*2)))))
                 root.blit(text,textRect)
+
+def draw_footer():
+    pygame.draw.line(root, (0, 0, 0), (0, resolutionField), (resolutionField, resolutionField), 10)
+
+def draw_selector():
+    row=selector_pos[0]
+    col=selector_pos[1]
+    selRect=pygame.Rect(col*resolutionField//basesize**2,row*resolutionField//basesize**2,resolutionField//basesize**2,resolutionField//basesize**2)
+    pygame.draw.rect(root,(200,0,0),selRect,5)
+
+def move_selector(row_delta,col_delta):
+    row_old=selector_pos[0]
+    col_old=selector_pos[1]
+  
+    # TODO: FIX 
+    if(0<row_old-row_delta<basesize**2-2):
+        selector_pos[0]=row_old-row_delta
+    if(0<col_old-col_delta<basesize**2-2):
+        selector_pos[1]=col_old+col_delta
+    
+
+# Eventhandling
+
+def eventHandler(event):
+    if event.type == pygame.QUIT:
+            running=False
+            pygame.quit()
+            # sys.exit()
+    controlls(event)
+
+def controlls(event):
+    if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_UP:
+            move_selector(1,0)
+        if event.key == pygame.K_DOWN:
+            move_selector(-1,0)
+        if event.key == pygame.K_RIGHT:
+            move_selector(0,1)
+        if event.key == pygame.K_LEFT:
+            move_selector(0,-1)
+            
+
+    
+
+    
+
+
+
+
+
+
             
         
                     
@@ -52,11 +104,13 @@ board = [
 
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running=False
+        eventHandler(event)
             
     root.fill((250, 250, 250))
     draw_field()
     draw_num(board)
+    draw_footer()
+    draw_selector()
     pygame.display.update()
+    
 
