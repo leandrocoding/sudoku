@@ -55,14 +55,11 @@ def interactiveArgs():
 
 def generator(baseSize,difficulty, amount, outfilename):
    count=difficulty*baseSize**2
-   Sudokulist=[]
-   for _ in range(amount):
-      Sudokulist.append(generateSudoku(baseSize=baseSize, count=count))
 
    with open(outfilename, 'a') as txtfile:
 
-      for sudoku in Sudokulist:
-         txtfile.write(f"{sudoku}\n \n")
+      for _ in range(amount):
+         txtfile.write(f"{generateSudoku(baseSize=baseSize, count=count)}\n \n")
    
 
 
