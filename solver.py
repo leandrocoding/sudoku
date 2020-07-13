@@ -1,5 +1,5 @@
 import math
-import numpy as np
+# import numpy as np
 import random
 import copy
 import inspect
@@ -66,7 +66,6 @@ def check(num, row, col, bo):
     # Check Square
     return checksquare(num, row, col, bo)
 
-    return True
 
 
 def checksquare(num, row, col, bo):
@@ -179,7 +178,7 @@ def removeFields(grid, count=15, seed=None):
                 print("Used backup")
 
 
-def generateSudoku(seed=None, count=35, debug=False):
+def generateSudoku(seed=None, count=35, baseSize=3, debug=False):
     grid = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
     gen(grid, seed=seed)
     removeFields(grid, count=count, seed=seed)
