@@ -59,7 +59,7 @@ def generator(baseSize,difficulty, amount, outfilename):
    count=difficulty*baseSize**2
    for i in range(amount):
       with open(outfilename, 'a') as txtfile:
-         sudoku=generateSudoku(baseSize=baseSize, count=count)
+         sudoku=generateSudoku(baseSiz=baseSize, count=count)
          txtfile.write(f"{i}: {sudoku}\n \n")
    
 
