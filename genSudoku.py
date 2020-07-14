@@ -48,30 +48,24 @@ def interactiveArgs():
    baseSize=askExeptSet("Please input the disired baseSize.\n Basesize:","BaseSize",3)
    difficulty= askExeptSet("Please input the disired difficulty. Higher Value higher less given Fields \n Difficulty:", "Difficulty",2)
    amount=askExeptSet("Please input the disired amount of fields generated. \n Amount:","Amount",1)
-   outfilename=askExeptSet("Please input the disired Filename for the outputfile. Default Sudokus.txt \n Filename:","Filename","Sudokus.txt")
+   outfilename=input("Please input the disired Filename for the outputfile. Default Sudokus.txt \n Filename:")
+   if outfilename =="":
+      outfilename="Sudokus.txt"
    generator(baseSize,difficulty, amount, outfilename)
 
 
 
 def generator(baseSize,difficulty, amount, outfilename):
    count=difficulty*baseSize**2
-
-   with open(outfilename, 'a') as txtfile:
-
-      for _ in range(amount):
-         txtfile.write(f"{generateSudoku(baseSize=baseSize, count=count)}\n \n")
+   for i in range(amount):
+      with open(outfilename, 'a') as txtfile:
+         sudoku=generateSudoku(baseSize=baseSize, count=count)
+         txtfile.write(f"{i}: {sudoku}\n \n")
    
 
 
 
       
-   
-         
-      
-
-
-
-
 if __name__ == "__main__": 
    if len(sys.argv)>1:
       cmdArgs(sys.argv[1:])
