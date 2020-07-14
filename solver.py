@@ -4,7 +4,12 @@ import random
 import copy
 import inspect
 from time import sleep
-from config import basesize, currGrid, solving, sleeptime
+from config import currGrid, solving, sleeptime
+from config import  basesize as bs
+
+
+
+basesize=bs
 
 
 # Dimensions of the board variable?
