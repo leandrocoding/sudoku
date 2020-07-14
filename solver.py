@@ -185,8 +185,8 @@ def removeFields(grid, count=15, seed=None):
 
 
 def generateSudoku(seed=None, count=35, baseSiz=3, debug=False):
-    global baseSize
-    baseSize = baseSiz
+    global basesize
+    basesize = baseSiz
     grid = [[0 for i in range(basesize**2)]for j in range(basesize**2)]
     gen(grid, seed=seed)
     removeFields(grid, count=count, seed=seed)
