@@ -66,6 +66,7 @@ def check(num, row, col, bo):
     # Check Square
     return checksquare(num, row, col, bo)
 
+    return True
 
 
 def checksquare(num, row, col, bo):
@@ -124,7 +125,7 @@ def solve(bo, sols=None, fast=False):
                         bo[row][col] = 0
                 return
 
-    # print(np.matrix(bo))
+    # print(np.matrix(bo))  3
     sols.append(copy.deepcopy(bo))
 
 
@@ -183,6 +184,7 @@ def generateSudoku(seed=None, count=35, baseSize=3, debug=False):
     gen(grid, seed=seed)
     removeFields(grid, count=count, seed=seed)
     return grid
+
 
 
 # exp = generateSudoku(count=250)
