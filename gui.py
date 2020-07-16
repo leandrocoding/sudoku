@@ -5,11 +5,11 @@ import concurrent.futures
 
 from solver import solve
 from config import basesize, resolutionField, spacebelowinPX, displayinHexa, showingSteps, currGrid, solving
-from testGrids import grid9x9_1, grid16x16_1, grid16x16_2, grid16x16_3, grid16x16_4, grid25x25_1
+from testGrids import *
 from multiprocessing.pool import ThreadPool
 
 # Config
-currGrid = grid9x9_1
+currGrid = temptestgrid
 
 pygame.init()
 
@@ -126,7 +126,7 @@ def guiSolve(bo, showSteps):
 
     solutions = []
     global currGrid
-    solve(currGrid, sols=solutions, showSteps=showSteps)
+    solve(currGrid, sols=solutions)
     bo = solutions[0]
     print("Solved")
     print(bo)
