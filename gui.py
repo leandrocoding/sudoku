@@ -1,138 +1,158 @@
 import pygame
 import sys
-
-from solver import solve
-from config import Config, Temp
-from config import basesize, resolutionField, spacebelowinPX, displayinHexa, showingSteps, currGrid, solving
-from testGrids import grid9x9_1, grid16x16_1, grid16x16_2, grid16x16_3, grid16x16_4, grid25x25_1
 from multiprocessing.pool import ThreadPool
 
-t = Temp()
-# Config
+from solver import solve
+from config import Config as c, Temp as t
+
+
+
+
+# ***************Testing Config****************
+from testGrids import grid9x9_1
 t.currGrid = grid9x9_1
 
-pygame.init()
+# ****************End of Config****************
 
-pygame.display.set_caption("Sudoku")
-root = pygame.display.set_mode(
-    (resolutionField, resolutionField+spacebelowinPX))
+def run():
+    setup()
+    mainloop()
 
-# background = pygame.Surface((900,1000))
-# background.fill(pygame.Color("#000000"))
-root.fill((250, 250, 250))
 
-font = pygame.font.SysFont(None, resolutionField//basesize**2)
-selector_pos = [0, 0]  # (Row,Col)
-given = []
+def mainloop():
+
+    while running:
+        for event in pygame.event.get():
+            eventHandler(event)
+        draw(t.currGrid)
+
+def setup():
+    global root, font, running
+    pygame.init()
+
+    pygame.display.set_caption("Sudoku")
+
+
+    root = pygame.display.set_mode(
+        (c.resolutionField, c.resolutionField+c.spacebelowinPX))
+
+    root.fill((250, 250, 250))
+
+    font = pygame.font.SysFont(None, c.resolutionField//c.basesize**2)
+    t.selector_pos = [0, 0]  # (Row,Col)
+    t.given = []
+    running = True
 
 
 def setConfig(basesize=3, resolutionField=900, spacebelowinPX=100, displayinHexa=False, sleeptime=0):
-    t.conf = Config(basesize, resolutionField, spacebelowinPX, displayinHexa, sleeptime)
-    return t.conf
+    c.basesize=basesize
+    c.resolutionField=resolutionField
+    c.spacebelowinPX=spacebelowinPX
+    c.displayinHexa=displayinHexa
+    c.sleeptime=sleeptime
+
+    return c
 
 
-def draw_field(conf):
-    for i in range(conf.basesize**2+1):
-        pygame.draw.line(root, (0, 0, 0), (i*conf.resolutionField//(conf.basesize**2), 0),
-                         (i*conf.resolutionField//(conf.basesize**2), conf.resolutionField), 2)
-        pygame.draw.line(root, (0, 0, 0), (0, i*conf.resolutionField//(conf.basesize**2)),
-                         (conf.resolutionField, i*conf.resolutionField//(conf.basesize**2)), 2)
+def draw_field():
+    for i in range(c.basesize**2+1):
+        pygame.draw.line(root, (0, 0, 0), (i*c.resolutionField//(c.basesize**2), 0),
+                         (i*c.resolutionField//(c.basesize**2), c.resolutionField), 2)
+        pygame.draw.line(root, (0, 0, 0), (0, i*c.resolutionField//(c.basesize**2)),
+                         (c.resolutionField, i*c.resolutionField//(c.basesize**2)), 2)
 
-    for i in range(conf.basesize+1):
-        pygame.draw.line(root, (0, 0, 0), (0, i*conf.resolutionField//(conf.basesize)),
-                         (conf.resolutionField, i*conf.resolutionField//(conf.basesize)), 5)
-        pygame.draw.line(root, (0, 0, 0), (i*conf.resolutionField//(conf.basesize), 0),
-                         (i*conf.resolutionField//(conf.basesize), conf.resolutionField), 5)
+    for i in range(c.basesize+1):
+        pygame.draw.line(root, (0, 0, 0), (0, i*c.resolutionField//(c.basesize)),
+                         (c.resolutionField, i*c.resolutionField//(c.basesize)), 5)
+        pygame.draw.line(root, (0, 0, 0), (i*c.resolutionField//(c.basesize), 0),
+                         (i*c.resolutionField//(c.basesize), c.resolutionField), 5)
 
 
-def draw_num(grid,conf):
-    if len(grid) != conf.basesize**2:
+def draw_num(grid):
+    if len(grid) != c.basesize**2:
         print(
-            f"Expected Sudoku with side length {conf.basesize**2}. Instead got a Sudoku with a side length of {len(grid)}")
+            f"Expected Sudoku with side length {c.basesize**2}. Instead got a Sudoku with a side length of {len(grid)}")
         print("Please check your config!")
         print("Exiting now!")
         global running
         running = False
         pygame.quit()
         sys.exit()
-
         return False
 
-    for row in range(0, conf.basesize**2):
-        for col in range(0, conf.basesize**2):
+    for row in range(0, c.basesize**2):
+        for col in range(0, c.basesize**2):
             num = grid[row][col]
             if num != 0:
-                if displayinHexa:
+                if c.displayinHexa:
                     num = hex(num).split('x')[-1]
                 text = font.render(str(num), True, (0, 0, 0), (250, 250, 250))
                 textRe = text.get_rect()
-                textRect = textRe.move((row*conf.resolutionField//(conf.basesize**2)+(int(resolutionField/(
-                    conf.basesize**3*1.1))), (col*resolutionField//(conf.basesize**2)+(resolutionField//(conf.basesize**3*2)))))
+                textRect = textRe.move((row*c.resolutionField//(c.basesize**2)+(int(c.resolutionField/(
+                    c.basesize**3*1.1))), (col*c.resolutionField//(c.basesize**2)+(c.resolutionField//(c.basesize**3*2)))))
                 root.blit(text, textRect)
 
 
-def draw_footer(conf):
-    pygame.draw.line(root, (0, 0, 0), (0, conf.resolutionField),
-                     (conf.resolutionField, conf.resolutionField), 10)
+def draw_footer():
+    pygame.draw.line(root, (0, 0, 0), (0, c.resolutionField),
+                     (c.resolutionField, c.resolutionField), 10)
 
 
-def draw_selector(conf):
-    row = selector_pos[0]
-    col = selector_pos[1]
-    selRect = pygame.Rect(col*conf.resolutionField//conf.basesize**2, row*conf.resolutionField //
-                          conf.basesize**2, conf.resolutionField//conf.basesize**2, conf.resolutionField//conf.basesize**2)
+def draw_selector():
+    row = t.selector_pos[0]
+    col = t.selector_pos[1]
+    selRect = pygame.Rect(col*c.resolutionField//c.basesize**2, row*c.resolutionField//c.basesize**2,
+                          c.resolutionField//c.basesize**2, c.resolutionField//c.basesize**2)
     pygame.draw.rect(root, (200, 0, 0), selRect, 5)
 
 
-def draw(grid,conf):
+def draw(grid):
     root.fill((250, 250, 250))
-    draw_field(conf)
-    draw_num(currGrid,conf)
-    draw_footer(conf)
-    draw_selector(conf)
+    draw_field()
+    draw_num(grid)
+    draw_footer()
+    draw_selector()
     pygame.display.update()
 
 
-def move_selector(row_delta, col_delta, conf):
-    row_old = selector_pos[0]
-    col_old = selector_pos[1]
+def move_selector(row_delta, col_delta):
+    row_old = t.selector_pos[0]
+    col_old = t.selector_pos[1]
 
-    if(0 <= row_old-row_delta < conf.basesize**2):
-        selector_pos[0] = row_old-row_delta
-    if(0 <= col_old+col_delta < conf.basesize**2):
-        selector_pos[1] = col_old+col_delta
+    if(0 <= row_old-row_delta < c.basesize**2):
+        t.selector_pos[0] = row_old-row_delta
+    if(0 <= col_old+col_delta < c.basesize**2):
+        t.selector_pos[1] = col_old+col_delta
 
 
 def setSelector(row, col):
-    selector_pos[0] = int(row)
-    selector_pos[1] = int(col)
+    t.selector_pos[0] = int(row)
+    t.selector_pos[1] = int(col)
 
 
-def mouseSelect(conf):
+def mouseSelect():
     pos = pygame.mouse.get_pos()
     x_mouse = pos[0]
     y_mouse = pos[1]
-    if y_mouse > conf.resolutionField:
+    if y_mouse > c.resolutionField:
         return
-    col = x_mouse//(conf.resolutionField//conf.basesize**2)
-    row = y_mouse//(conf.resolutionField//conf.basesize**2)
+    col = x_mouse//(c.resolutionField//c.basesize**2)
+    row = y_mouse//(c.resolutionField//c.basesize**2)
     setSelector(row, col)
 
 
 def givenChecker(grid):
     global given
     given = []
-    for r, row in enumerate(grid):
-        for c, col in enumerate(row):
+    for ro, row in enumerate(grid):
+        for co, col in enumerate(row):
             if col != 0:
-                given.append((r, c))
+                given.append((ro, co))
 
 
-def guiSolve(bo,conf):
-    # TODO change currGrid to temp.currGrid
+def guiSolve(bo):
     solutions = []
-    global currGrid
-    solve(currGrid, conf, sols=solutions)
+    solve(t.currGrid, sols=solutions)
     bo = solutions[0]
     print("Solved")
     print(bo)
@@ -144,25 +164,16 @@ def guiSolve(bo,conf):
 
 
 def setCurrGrid(ret):
-    global currGrid
-    currGrid = ret
+    # global currGrid
+    t.currGrid = ret
 
 
-def solveThread(curr,conf):
-
-    # with concurrent.futures.ThreadPoolExecutor() as executor:
-    #     global currGrid
-
-    #     future = executor.submit(guiSolve, currGrid, showingSteps)
-    #     newGrid = future.result()
-
-    #     currGrid=newGrid
-    #     print(currGrid)
+def solveThread(curr):
 
     pool = ThreadPool(processes=1)
 
     _ = pool.apply_async(
-        solve, (curr,conf), callback=setCurrGrid)
+        solve, (curr,c), callback=setCurrGrid)
 
 
 # Eventhandling
@@ -194,20 +205,13 @@ def controlls(event):
         #
 
         if event.key == pygame.K_s:
-            solveThread(currGrid)
+            solveThread(t.currGrid)
 
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouseSelect()
 
 
-running = True
+
 
 if __name__ == "__main__":
-    bs=input("Basesize: ")
-    setConfig(basesize=bs)
-
-
-while running:
-    for event in pygame.event.get():
-        eventHandler(event)
-    draw(currGrid)
+    run()
