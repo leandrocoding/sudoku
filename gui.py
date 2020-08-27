@@ -1,16 +1,20 @@
 import pygame
 import sys
 from multiprocessing.pool import ThreadPool
+import threading
+import copy
 
 from solver import solve
 from config import Config as c, Temp as t
+# from confgui import confguirun, setupconfig
 
+# from _thread import start_new_thread
 
 
 
 # ***************Testing Config****************
-from testGrids import grid9x9_1
-t.currGrid = grid9x9_1
+from testGrids import Grids
+t.currGrid = copy.deepcopy(Grids.grid9x9_1)
 
 # ****************End of Config****************
 
@@ -21,14 +25,17 @@ def run():
 
 def mainloop():
 
-    while running:
+    while t.pygameActive:
         for event in pygame.event.get():
             eventHandler(event)
         draw(t.currGrid)
+    pygame.quit()
+    
 
 def setup():
     global root, font, running
     pygame.init()
+    t.pygameActive=True
 
     pygame.display.set_caption("Sudoku")
 
@@ -42,6 +49,8 @@ def setup():
     t.selector_pos = [0, 0]  # (Row,Col)
     t.given = []
     running = True
+    t.pygameActive=True
+    # setupconfig()
 
 
 def setConfig(basesize=3, resolutionField=900, spacebelowinPX=100, displayinHexa=False, sleeptime=0):
@@ -182,6 +191,7 @@ def eventHandler(event):
     if event.type == pygame.QUIT:
         global running
         running = False
+        t.pygameActive=False
         pygame.quit()
         sys.exit()
     controlls(event)
@@ -199,6 +209,18 @@ def controlls(event):
             move_selector(0, 1)
         if event.key == pygame.K_LEFT:
             move_selector(0, -1)
+        if event.key == pygame.K_m:
+            # start_new_thread(confguirun,())
+            # t1 = threading.Thread(target=confguirun) 
+    
+            # t1.start() 
+            pass
+   
+            
+        #     pooll = ThreadPool(processes=1)
+
+        # _ = pooll.apply_async(confguirun, ())
+           
 
         # Num input
         # TODO Input for numbers
