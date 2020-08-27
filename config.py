@@ -11,9 +11,10 @@
 class Config(object):
     basesize=3
     resolutionField=600
-    spacebelowinPX=100
+    spacebelowinPX=0
     displayinHexa=False
-    sleeptime=0
+    sleeptime=0.05
 
 class Temp(object):
     currGrid=None
+    pygameActive=False
