@@ -5,6 +5,7 @@ from multiprocessing import Process
 from testGrids import Grids
 import copy
 from threading import Thread
+from advsolve import findPossi
 
 
 
@@ -21,24 +22,24 @@ def updateconfig(sender,data):
     c.sleeptime=dpg.get_value("Delay in ms")/1000
 
 def startPygame(sender,data):
+    
     if not t.pygameActive:
         
-        # pool = ThreadPool(processes=1)
-
-        # _ = pool.apply_async(run, ())
+        
         t.pygameActive=True
-        t1 = Thread(target=run)
-        # a1= Process(target=run)
-        # if a1.is_alive:
-        #     a1.terminate()
-        # a1.run()
-        # print("Im here")
-        t1.start()
+        
+        dpg.run_async_function("asyncrun",())
     else:
         print("Pygame is already running")
 
-def resetGrid(s,d):
+
+def asyncrun(s,d):
+    run()
+
+def resetGrid(s=None,d=None):
     t.currGrid = copy.deepcopy(Grids.gridBases[c.basesize]["Easy1"])
+    print(findPossi(t.currGrid))
+
 
 def stopSudoku(s,d):
     t.pygameActive=False
@@ -73,7 +74,6 @@ def setupconfig():
     dpg.add_button(name="Set a Grid",callback="setGridone")
 
     # dpg.add_listbox(name="Grid Selection",items=Grids.gridBases[3])
-
 
 
 def confguirun():

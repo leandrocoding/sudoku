@@ -5,7 +5,8 @@ import threading
 import copy
 
 from solver import solve
-from config import Config as c, Temp as t
+from config import Config as c, Temp as t, Solvertype
+from advsolve import solveadv
 # from confgui import confguirun, setupconfig
 
 # from _thread import start_new_thread
@@ -31,6 +32,10 @@ def mainloop():
         draw(t.currGrid)
     pygame.quit()
     
+
+def resetGrid():
+    t.currGrid = copy.deepcopy(Grids.gridBases[c.basesize]["Easy1"])
+    # print(findPossi(t.currGrid))
 
 def setup():
     global root, font, running
@@ -105,6 +110,10 @@ def draw_num(grid):
 def draw_footer():
     pygame.draw.line(root, (0, 0, 0), (0, c.resolutionField),
                      (c.resolutionField, c.resolutionField), 10)
+    text = font.render(Solvertype.solvers[c.currsolverindex], True, (0, 0, 0), (250, 250, 250))
+    textRe = text.get_rect()
+    textRect = textRe.move((0,c.resolutionField+round(c.spacebelowinPX/3)))
+    root.blit(text, textRect)
 
 
 def draw_selector():
@@ -161,7 +170,9 @@ def givenChecker(grid):
 
 def guiSolve(bo):
     solutions = []
-    solve(t.currGrid, sols=solutions)
+    # solve(t.currGrid, sols=solutions)
+    solveadv(t.currGrid, sols=solutions)
+
     bo = solutions[0]
     print("Solved")
     print(bo)
@@ -176,14 +187,33 @@ def setCurrGrid(ret):
     # global currGrid
     t.currGrid = ret
 
+def solveselect(curr,abc=None):
+    c.solver=Solvertype.solvers[c.currsolverindex]
+    if c.solver==Solvertype.backnorm:
+        return solve(curr,abc)
+    
+    elif c.solver==Solvertype.backadv:
+        return solveadv(curr,abc)
+    else:
+        print("Not implemented at the Moment. \n Coming soon!")
+        return t.currGrid
+
+
 
 def solveThread(curr):
 
     pool = ThreadPool(processes=1)
 
     _ = pool.apply_async(
-        solve, (curr,c), callback=setCurrGrid)
+        solveselect, (curr,c), callback=setCurrGrid)
 
+def changeSolver(dir):
+    newindex= c.currsolverindex+dir
+    if newindex>len(Solvertype.solvers)-1:
+        newindex+=-len(Solvertype.solvers)
+    if newindex<0:
+        newindex+=len(Solvertype.solvers)
+    c.currsolverindex=newindex
 
 # Eventhandling
 
@@ -215,6 +245,12 @@ def controlls(event):
     
             # t1.start() 
             pass
+        if event.key == pygame.K_r:
+            resetGrid()
+        if event.key == pygame.K_LCTRL:
+            changeSolver(-1)
+        if event.key == pygame.K_LSHIFT:
+            changeSolver(1)
    
             
         #     pooll = ThreadPool(processes=1)

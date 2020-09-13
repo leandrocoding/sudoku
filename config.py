@@ -8,12 +8,22 @@
 # spacebelowinPX:
 #     spacebelowinPX defines the amount of pixels below the main Sudoku Grid in the pygame Window.
 
+class Solvertype:
+    backnorm="Backtracking Normal"
+    backadv="Backtracking optimized"
+    dancinglinks="Dancinglinks Algorythm X"
+
+    solvers= [backnorm,backadv,dancinglinks]
+
 class Config(object):
     basesize=3
     resolutionField=600
-    spacebelowinPX=0
+    spacebelowinPX=100
     displayinHexa=False
     sleeptime=0.05
+    currsolverindex=0
+    solver=Solvertype.solvers[currsolverindex]
+    
 
 class Temp(object):
     currGrid=None
