@@ -6,6 +6,7 @@ import copy
 
 from solver import solve
 from config import Config as c, Temp as t
+from advsolve import solveadv
 # from confgui import confguirun, setupconfig
 
 # from _thread import start_new_thread
@@ -31,6 +32,10 @@ def mainloop():
         draw(t.currGrid)
     pygame.quit()
     
+
+def resetGrid():
+    t.currGrid = copy.deepcopy(Grids.gridBases[c.basesize]["Easy1"])
+    # print(findPossi(t.currGrid))
 
 def setup():
     global root, font, running
@@ -161,7 +166,9 @@ def givenChecker(grid):
 
 def guiSolve(bo):
     solutions = []
-    solve(t.currGrid, sols=solutions)
+    # solve(t.currGrid, sols=solutions)
+    solveadv(t.currGrid, sols=solutions)
+
     bo = solutions[0]
     print("Solved")
     print(bo)
@@ -182,7 +189,7 @@ def solveThread(curr):
     pool = ThreadPool(processes=1)
 
     _ = pool.apply_async(
-        solve, (curr,c), callback=setCurrGrid)
+        solveadv, (curr,c), callback=setCurrGrid)
 
 
 # Eventhandling
@@ -215,6 +222,8 @@ def controlls(event):
     
             # t1.start() 
             pass
+        if event.key == pygame.K_r:
+            resetGrid()
    
             
         #     pooll = ThreadPool(processes=1)
