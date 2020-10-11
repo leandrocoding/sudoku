@@ -31,7 +31,7 @@ def mainloop():
             eventHandler(event)
         draw(t.currGrid)
     pygame.quit()
-    
+
 
 def resetGrid():
     t.currGrid = copy.deepcopy(Grids.gridBases[c.basesize]["Easy1"])
@@ -256,7 +256,7 @@ def controlls(event):
         #     pooll = ThreadPool(processes=1)
 
         # _ = pooll.apply_async(confguirun, ())
-           
+
 
         # Num input
         # TODO Input for numbers
