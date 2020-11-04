@@ -22,6 +22,7 @@ def encode_sudoku_from_ascii(problem=None):
     initial = [(i, j, d) for i, row in enumerate(rows)
                for j, d in enumerate(row) if 0 <= DIGITS.find(d) < n]
     return n, initial
+    #(n,[(1,2,"2"),(2,2,"7")])
 
 
 def decode_sudoku_to_ascii(n, solution):
@@ -55,6 +56,34 @@ def matrix_to_exact(grid):
             if num!=0:
                 out.append((i,j,str(num)))
     return n, out
+
+
+#(n,[(1,2,"2"),(2,2,"7")])
+
+def exact_to_matrix(n,prob):
+    out=[[0 for i in range(n)] for j in range(n)]
+    
+    # if any(len(row) != n for row in rows):
+    #     raise ValueError("All rows must have length "+ n)
+
+    # for element in prob:
+    #     num = element[]
+
+
+
+def asci_to_matrix(problem):
+    rows = problem.split()
+    n = len(rows)
+    if any(len(row) != n for row in rows):
+        raise ValueError("All rows must have length "+ n)
+    out=[]
+    for row in rows:
+        out.append(list(row))
+
+
+
+
+
 
 
 
