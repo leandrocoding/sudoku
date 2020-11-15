@@ -33,20 +33,21 @@ def main(infile=None,outfile=None,n=None):
         f.write("==============================================\n\r")
         f.write(f"Start of Benchmark with {n} executions of the set with {len(sudoku_set)} sudokus.\n\r")
         f.write("==============================================\n\r")
+    for _ in range(n):
+        time = execute(sudoku_set,normalBacktrack,n)
+        timeoutput(outfile, time,"Normal Backtracking",n)
+        print(f"Normal Backtracking done in {time} seconds")
+        sleep(60*5)
+        time2 = execute(sudoku_set,advancedBacktrack,n)
+        timeoutput(outfile, time2,"Advanced Backtracking",n)
+        print(f"Advanced Backtracking done in {time2} seconds")
+        sleep(60*5)
+        time3 = execute(sudoku_set,dancingLink,n)
+        timeoutput(outfile, time3,"Dancing Links",n)
+        print(f"Dancing Links done in {time3} seconds")
+        print(f"Finished in {time+time2+time3} seconds")
+        sleep(60*5)
     
-    time = execute(sudoku_set,normalBacktrack,n)
-    timeoutput(outfile, time,"Normal Backtracking",n)
-    print(f"Normal Backtracking done in {time} seconds")
-    sleep(1)
-    time2 = execute(sudoku_set,advancedBacktrack,n)
-    timeoutput(outfile, time2,"Advanced Backtracking",n)
-    print(f"Advanced Backtracking done in {time2} seconds")
-    sleep(1)
-    time3 = execute(sudoku_set,dancingLink,n)
-    timeoutput(outfile, time3,"Dancing Links",n)
-    print(f"Dancing Links done in {time3} seconds")
-    sleep(1)
-    print(f"Finished in {time+time2+time3} seconds")
     # sleep(10)  # will be buch higher in production, to idle between algos
 
 
@@ -84,4 +85,4 @@ def dancingLink(sud):
     ds.sudoku_solve(problem=sud)
 
 if __name__ == "__main__":
-    main(infile="sudoku700.pickle",outfile="sudokutime700.txt",n=1)
+    main(infile="sudoku700.pickle",outfile="sudokutime70020.txt",n=20)
