@@ -7,9 +7,6 @@ import copy
 from solver import solve
 from config import Config as c, Temp as t, Solvertype
 from advsolve import solveadv
-# from confgui import confguirun, setupconfig
-
-# from _thread import start_new_thread
 
 
 
@@ -31,7 +28,7 @@ def mainloop():
             eventHandler(event)
         draw(t.currGrid)
     pygame.quit()
-    
+
 
 def resetGrid():
     t.currGrid = copy.deepcopy(Grids.gridBases[c.basesize]["Easy1"])

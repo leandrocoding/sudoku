@@ -1,0 +1,39 @@
+
+
+============================================================================================Start of Benchmark with 23 executions of the set.==============================================Solved a set of sudokus 23 times in 2.7000000000082514e-06 Seconds using the Normal Backtracking algorithm.
+
+============================================================================================
+Start of Benchmark with 1 executions of the set.
+==============================================
+Solved a set of sudokus 1 times in 4.399999999987747e-06 Seconds using the Normal Backtracking algorithm.
+
+============================================================================================
+Start of Benchmark with 1 executions of the set.
+==============================================
+Solved a set of sudokus 1time in 3.999999999976245e-06 Seconds using the Normal Backtracking algorithm.
+
+============================================================================================
+Start of Benchmark with 11 executions of the set.
+==============================================
+Solved a set of sudokus 11 times in 4.699999999996374e-06 Seconds using the Normal Backtracking algorithm.
+
+============================================================================================
+Start of Benchmark with 11 executions of the set.
+==============================================
+Solved a set of sudokus 11 times in 4.9918556999999995 Seconds using the Normal Backtracking algorithm.Solved a set of sudokus 11 times in 9.667374 Seconds using the Advanced Backtracking algorithm.Solved a set of sudokus 11 times in 0.037747700000000606 Seconds using the Dancing Links algorithm.
+
+============================================================================================
+Start of Benchmark with 11 executions of the set.
+==============================================
+Solved a set of sudokus 11 times in 4.705600199999999 Seconds using the Normal Backtracking algorithm.
+Solved a set of sudokus 11 times in 10.3599843 Seconds using the Advanced Backtracking algorithm.
+Solved a set of sudokus 11 times in 0.04073929999999848 Seconds using the Dancing Links algorithm.
+
+
+============================================================================================
+Start of Benchmark with 11 executions of the set.
+==============================================
+Solved a set of sudokus 11 times in 4.8246757 Seconds using the Normal Backtracking algorithm.
+Solved a set of sudokus 11 times in 9.0096052 Seconds using the Advanced Backtracking algorithm.
+Solved a set of sudokus 11 times in 0.03248960000000167 Seconds using the Dancing Links algorithm.
+
