@@ -4,16 +4,29 @@ from itertools import chain, product
 from string import ascii_lowercase, ascii_uppercase
 
 
-
-
 from exactcover import Exactcover
 from math import floor, sqrt
 
 from testGrids import Grids
 DIGITS = "123456789" + ascii_lowercase + ascii_uppercase
+#   """Encodes a Sudoku in Ascii-art to datastructure.
+
+#     :param problem: The Sudoku as a Ascii-art. 
+#     :return: Encoded Sudoku
+#     """
+
 
 
 def encode_sudoku_from_ascii(problem=None):
+    """Encodes a Sudoku in Ascii-art to datastructure.
+    
+    Args:
+        problem:
+            The Sudoku in Ascii-art
+        
+    Returns:
+        Encoded Sudoku
+    """
     rows = problem.split()
     n = len(rows)
     if any(len(row) != n for row in rows):
@@ -22,15 +35,18 @@ def encode_sudoku_from_ascii(problem=None):
     initial = [(i, j, d) for i, row in enumerate(rows)
                for j, d in enumerate(row) if 0 <= DIGITS.find(d) < n]
     return n, initial
-    #(n,[(1,2,"2"),(2,2,"7")])
 
 
 def decode_sudoku_to_ascii(n, solution):
+    """Encodes a Sudoku from complex Datastructure to Ascii-art.
+
+    :param n: Sidelength of the Sudoku.
+    :param solution: The Sudoku in complex Datastructure.
+    """
     grid = [["."] * n for _ in range(n)]
     for i, j, d in solution:
         grid[i][j] = d
     return "\n".join("".join(row) for row in grid)
-
 
 # Solver
 
@@ -58,17 +74,12 @@ def matrix_to_exact(grid):
     return n, out
 
 
-#(n,[(1,2,"2"),(2,2,"7")])
-
 def exact_to_matrix(n,prob):
     out=[[0 for i in range(n)] for j in range(n)]
-    
-    # if any(len(row) != n for row in rows):
-    #     raise ValueError("All rows must have length "+ n)
+    for elem in prob:
+        out[elem[0]][elem[1]]=int(elem[2])
 
-    # for element in prob:
-    #     num = element[]
-
+    return out
 
 
 def asci_to_matrix(problem):

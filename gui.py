@@ -7,9 +7,6 @@ import copy
 from solver import solve
 from config import Config as c, Temp as t, Solvertype
 from advsolve import solveadv
-# from confgui import confguirun, setupconfig
-
-# from _thread import start_new_thread
 
 
 
@@ -121,7 +118,7 @@ def draw_selector():
     col = t.selector_pos[1]
     selRect = pygame.Rect(col*c.resolutionField//c.basesize**2, row*c.resolutionField//c.basesize**2,
                           c.resolutionField//c.basesize**2, c.resolutionField//c.basesize**2)
-    # pygame.draw.rect(root, (200, 0, 0), selRect, 5)
+    pygame.draw.rect(root, (200, 0, 0), selRect, 5)
 
 
 def draw(grid):

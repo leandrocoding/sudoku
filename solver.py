@@ -76,7 +76,8 @@ def solutioncounter(bo, debug=False, fast=False):
 
 
 def solve(bo, sols=None, fast=False):
-    sleeptimer = c.sleeptime
+    # sleeptimer = c.sleeptime
+    sleeptimer=0
     # if fast:
     #     sleeptimer=0
     global currGrid

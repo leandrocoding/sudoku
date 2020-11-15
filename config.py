@@ -20,7 +20,7 @@ class Config(object):
     resolutionField=600
     spacebelowinPX=100
     displayinHexa=False
-    sleeptime=0.05
+    sleeptime=0
     currsolverindex=0
     solver=Solvertype.solvers[currsolverindex]
     

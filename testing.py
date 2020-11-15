@@ -34,7 +34,7 @@ def boo():
         9.....5..
         3...84...
         '''
- 
+
     n, problem = matrix_to_exact(Grids.grid16x16_3)
     # print(problem)
     # print()
@@ -45,4 +45,7 @@ def boo():
 # print(problem)
 # print(decode_sudoku_to_ascii(n, next(sudoku_solve(n, problem))))
 
-foo()
+# foo()
+gr=Grids.grid9x9_1
+print(gr)
+print(matrix_to_exact())

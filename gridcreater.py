@@ -8,7 +8,7 @@ import pickle
 # print(su)
 
 def gen(n=1,outfile=None):
-  
+
     sudlist=[]
     for i in range(n):
         sudlist.append(make_sudoku(n=9))
@@ -30,8 +30,8 @@ def retrive(infile):
 
 
 if __name__ == "__main__":
-    testfile="sudoku.pickle"
-    gen(n=20,outfile=testfile)
+    testfile="sudoku700.pickle"
+    gen(n=700,outfile=testfile)
     print("Recieved:")
     print(retrive(testfile))
 

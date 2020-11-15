@@ -19,7 +19,6 @@ def solve_sudoku(n=9, problem=(), m=None):
         raise AmbiguousProblem('two or more solutions')
 
 def make_sudoku(n=9, m=None):
-    
     solution = sorted(next(sudoku(n=n, m=m, random=True)))
     given = [True] * n**2
     k = (n**2 + 1) // 2
