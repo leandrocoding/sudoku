@@ -103,5 +103,5 @@ def dancingLink(sud):
     ds.sudoku_solve(problem=sud)
 
 if __name__ == "__main__":
-    main(infile="sudoku700.pickle",outfile="sudokutime70040.txt",n=40)
+    main(infile="sudoku700.pickle",outfile="sudokutime700Oopt.txt",n=1)
     # profiling()
