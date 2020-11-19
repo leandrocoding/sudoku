@@ -2,22 +2,23 @@ import math
 import random
 import copy
 import inspect
+import ujson
 from time import sleep
 from config import Config as c,Temp as t
 
+"""
+Dimensions of the board variable?
+By default it should be 9x9
+The field can be bigger it however has to follow the rule, that the inner field is allways the squareroot tall and wide of the whole field.
+Example:
+Normal sudoku inner Fileds: 3x3, outer field is made out of 3x3 of the inner fields
+smaller Sudoku: inner field made out of 2X2 outer field is made of 2x2 of the outer field
+large Sudoku: inner field 4x4 outer field 16x16 or made out of 4x4 of the inner field.
 
-# Dimensions of the board variable?
-# By default it should be 9x9
-# The field can be bigger it however has to follow the rule, that the inner field is allways the squareroot tall and wide of the whole field.
-# Example:
-# Normal sudoku inner Fileds: 3x3, outer field is made out of 3x3 of the inner fields
-# smaller Sudoku: inner field made out of 2X2 outer field is made of 2x2 of the outer field
-# large Sudoku: inner field 4x4 outer field 16x16 or made out of 4x4 of the inner field.
 
-
-# A board is defined as Colloms in Rows.   x=col y=row cords are in the format bo [row][col] or bo[y][x]
-# A "0" stands dor empty.
-
+A board is defined as Colloms in Rows.   x=col y=row cords are in the format bo [row][col] or bo[y][x]
+A "0" stands dor empty.
+"""
 t.possibleNumbers = []
 for i in range(c.basesize**2+1):
     t.possibleNumbers.append(i)
@@ -27,6 +28,7 @@ for i in range(c.basesize**2+1):
 
 
 def check(num, row, col, bo):
+    """Checks if it is possible to put a number at a certain point. (LEGACY)"""
     # Check Row
     if num in bo[row]:
         return False
@@ -91,13 +93,13 @@ def solve(bo, sols=None, fast=False):
                     if check(n, row, col, bo):
                         bo[row][col] = n
                         # if showSteps:
-                        sleep(sleeptimer)
+                        # sleep(sleeptimer)
                         solve(bo, sols)
                         bo[row][col] = 0
                 return
 
     # print(np.matrix(bo))
-    sols.append(copy.deepcopy(bo))
+    sols.append(ujson.loads(ujson.dumps(bo)))
 
 
 def isSolved(bo):
