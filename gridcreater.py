@@ -29,13 +29,18 @@ def gen(n=1,outfile=None):
 
 
 def retrive(infile):
+    with open(infile, 'rb') as pickle_file:
+        sudlist= pickle.load(pickle_file)
+        # sudlist = ujson.loads(json_file.read())
+        # pickle.load()
+    return sudlist
+
+def retrivenew(infile):
     with open(infile, 'r') as json_file:
     #     # sudlist= pickle.load(pickle_file)
         sudlist = ujson.loads(json_file.read())
         # pickle.load()
     return sudlist
-
-
 if __name__ == "__main__":
     testfile="sudoku10.json"
     gen(n=10,outfile=testfile)
