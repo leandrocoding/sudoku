@@ -7,11 +7,10 @@ from string import ascii_lowercase, ascii_uppercase
 from exactcover import Exactcover
 from math import floor, sqrt
 
-from testGrids import Grids
 DIGITS = "123456789" + ascii_lowercase + ascii_uppercase
 #   """Encodes a Sudoku in Ascii-art to datastructure.
 
-#     :param problem: The Sudoku as a Ascii-art. 
+#     :param problem: The Sudoku as a Ascii-art.
 #     :return: Encoded Sudoku
 #     """
 
@@ -19,11 +18,11 @@ DIGITS = "123456789" + ascii_lowercase + ascii_uppercase
 
 def encode_sudoku_from_ascii(problem=None):
     """Encodes a Sudoku in Ascii-art to datastructure.
-    
+
     Args:
         problem:
             The Sudoku in Ascii-art
-        
+
     Returns:
         Encoded Sudoku
     """
@@ -90,12 +89,3 @@ def asci_to_matrix(problem):
     out=[]
     for row in rows:
         out.append(list(row))
-
-
-
-
-
-
-
-
-# print(matrix_to_exact(Grids.grid9x9_1))

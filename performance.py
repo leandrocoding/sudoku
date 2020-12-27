@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
 import cProfile
-from gridcreater import retrive
+from gridcreater import retrive_json
 from time import sleep, perf_counter
-import dancesud as ds
-import solver as basicsolver
-import advsolve
+import XSolver as ds
+import BASolver as basicsolver
+import OPBASolver as advsolve
 
 
 
@@ -27,10 +27,10 @@ def main(infile=None,outfile=None,n=None):
         except ValueError:
             print("Invalid input, using 1.")
             n=1
-    
 
 
-    sudoku_set = retrive(infile)
+
+    sudoku_set = retrive_json(infile)
     with open(outfile,"a+") as f:
         f.write("\n\r\n\r==============================================")
         f.write("==============================================\n\r")
@@ -40,68 +40,76 @@ def main(infile=None,outfile=None,n=None):
         time = execute(sudoku_set,normalBacktrack)
         timeoutput(outfile, time,"Normal Backtracking",m)
         print(f"Normal Backtracking done in {time} seconds")
-        sleep(60*5)
+        sleep(60*5)  # Waiting 5 minutes between executing the algorithms.
         time2 = execute(sudoku_set,advancedBacktrack)
         timeoutput(outfile, time2,"Advanced Backtracking",m)
         print(f"Advanced Backtracking done in {time2} seconds")
-        sleep(60*5)
-        time3 = execute(sudoku_set,dancingLink)
+        sleep(60*5)  # Waiting 5 minutes between executing the algorithms.
+        time3 = execute(sudoku_set,algox)
         timeoutput(outfile, time3,"Dancing Links",m)
         print(f"Dancing Links done in {time3} seconds")
         print(f"Finished in {time+time2+time3} seconds")
-        sleep(60*5)
-    
-    # sleep(10)  # will be buch higher in production, to idle between algos
+        sleep(60*5)  # Waiting 5 minutes between executing the algorithms.
+
+
 
 
 
 def timeoutput(outfile, time, method, n):
+    """Writes Measurements to <outfile>"""
     with open(outfile,"a+") as f:
         f.write(f"Solved a set of sudokus {n} {'time' if n==1 else 'times'} in {time:.3f} Seconds using the {method} algorithm.\n\r")
 
 def executeMe1():
-    # infile = "sudoku700.pickle"
-    infile = "sudoku.pickle"
-    sudoku_set = retrive(infile)
+    """This gets executed with the profiler."""
+    infile = "sudoku100.json"
+    sudoku_set = retrive_json(infile)
     for sud in sudoku_set:
         # normalBacktrack(sud)
-        # advancedBacktrack(sud)
-        dancingLink(sud)
+        advancedBacktrack(sud)
+        # algox(sud)
 
 
 
 
 
 def profiling():
+    """Profiling to analyze the algorithms in detail."""
     cProfile.run("executeMe1()",)
-    
 
 
 
 
-def execute(sud_set,method):
+
+def execute(sud_set,algorithm):
+    """Measures the time of execution time for a algorithm for a set of Sudoukus with """
     tic= perf_counter()
     # Do stuff
     for sud in sud_set:
-        method(sud)
+        algorithm(sud)
     toc=perf_counter()
     return toc-tic
-    
+
 
 def normalBacktrack(sud):
-    abc=[]
+    """ Interface for Native Backtracking """
+    abc=[]  # This is where the Solutions get added to.
     bo=ds.exact_to_matrix(9, sud)
     basicsolver.solve(bo,sols=abc)
 
 
 def advancedBacktrack(sud):
+    """ Interface for Native Backtracking """
+
     abc=[]
     bo= ds.exact_to_matrix(9, sud)
     advsolve.solveadv(bo,sols=abc)
-    
-def dancingLink(sud):
+
+def algox(sud):
+    """ Interface for Algorithm X """
+
     ds.sudoku_solve(problem=sud)
 
 if __name__ == "__main__":
-    main(infile="sudoku700.pickle",outfile="sut2.txt",n=1)
+    main(infile="finallSudoku1000.json",outfile="outsud/sut2.txt",n=1)
     # profiling()

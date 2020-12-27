@@ -1,9 +1,0 @@
-
-
-============================================================================================
-Start of Benchmark with 1 executions of the set.
-==============================================
-Solved a set of sudokus 1 time in 249.3820465 Seconds using the Normal Backtracking algorithm.
-Solved a set of sudokus 1 time in 564.865337 Seconds using the Advanced Backtracking algorithm.
-Solved a set of sudokus 1 time in 2.286250799999948 Seconds using the Dancing Links algorithm.
-

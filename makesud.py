@@ -1,6 +1,6 @@
 from itertools import islice
 from random import sample
-from dancesud import sudoku_solve as sudoku
+from XSolver import sudoku_solve as sudoku
 
 class ImpossibleProblem(Exception):
     pass

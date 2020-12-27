@@ -4,9 +4,9 @@ from multiprocessing.pool import ThreadPool
 import threading
 import copy
 
-from solver import solve
+from BASolver import solve
 from config import Config as c, Temp as t, Solvertype
-from advsolve import solveadv
+from XSolver import solveadv
 
 
 
@@ -188,7 +188,7 @@ def solveselect(curr,abc=None):
     c.solver=Solvertype.solvers[c.currsolverindex]
     if c.solver==Solvertype.backnorm:
         return solve(curr,abc)
-    
+
     elif c.solver==Solvertype.backadv:
         return solveadv(curr,abc)
     else:
@@ -238,9 +238,9 @@ def controlls(event):
             move_selector(0, -1)
         if event.key == pygame.K_m:
             # start_new_thread(confguirun,())
-            # t1 = threading.Thread(target=confguirun) 
-    
-            # t1.start() 
+            # t1 = threading.Thread(target=confguirun)
+
+            # t1.start()
             pass
         if event.key == pygame.K_r:
             resetGrid()
@@ -248,12 +248,12 @@ def controlls(event):
             changeSolver(-1)
         if event.key == pygame.K_LSHIFT:
             changeSolver(1)
-   
-            
+
+
         #     pooll = ThreadPool(processes=1)
 
         # _ = pooll.apply_async(confguirun, ())
-           
+
 
         # Num input
         # TODO Input for numbers
