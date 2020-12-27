@@ -51,7 +51,7 @@ def retrive_json(infile):
         sudlist= list(map(lambda inpp: list(map(tuple, inpp)), sudlisttemp))
     return sudlist
 if __name__ == "__main__":
-    testfile="finallSudoku1001.json"
+    testfile="sudoku100.json"
     gen(n=100,outfile=testfile)
     print("Recieved:")
     # print()

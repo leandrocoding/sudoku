@@ -7,9 +7,10 @@ import copy
 t.possibls=[]
 
 def rowcoltoNum(row,col):
+    """Converts 2D cooridinate to a 1D coordinate""""
     return row*c.basesize**2+col
 def getLen(elem):
-
+    """This function is used to Sort the fileds by possibilities."""
     leng=len(elem[0])
     if leng!=0:
         return leng
@@ -45,21 +46,17 @@ def newPossiFinder(bo,i,j):
 
 def findPossi(bo):
     """ Find all possibilities for all fields and add them to a list."""
-    t.possibls=[]
+    possis = []
     for row,rowVal in enumerate(bo):
         for col,colVal in enumerate(rowVal):
             localpossi=newPossiFinder(bo, col, row)
 
             if bo[row][col]==0:
                 # Here ujson.loads(ujson.dumps()) is used because it is much faster than copy.deepcopy() to make a copy of a list.
-                t.possibls.append(ujson.loads(ujson.dumps([localpossi,rowcoltoNum(row,col)])))
-    t.possibls.sort(key=getLen)
-    if t.possibls:
-        return True
-    else:
-        return False
-
-    return t.possibls
+                possis.append(ujson.loads(ujson.dumps([localpossi,rowcoltoNum(row,col)])))
+    possis.sort(key=getLen)
+    t.possibls = possis
+    return possis
 
 def solcountadv(bo):
     """Returns all Solutions"""
@@ -74,7 +71,6 @@ def solveadv(bo,sols=None):
 
 def solve(bo,sols=None):
     """Solve Sudoku with Optimized Backtracking algorithm"""
-    sleeptimer = c.sleeptime
 
     findPossi(bo)
 
@@ -87,10 +83,9 @@ def solve(bo,sols=None):
 
             if check(n, row, col, bo):
                 bo[row][col] = n
-                sleep(sleeptimer)
 
-
-                solve(bo, sols)
+                if solve(bo, sols):
+                    return True
                 bo[row][col] = 0
         return True
 
