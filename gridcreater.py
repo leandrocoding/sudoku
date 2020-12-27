@@ -14,8 +14,8 @@ import pickle  # Legacy
 import ujson
 
 
-from memory_profiler import profile
-@profile
+# from memory_profiler import profile
+# @profile
 def gen(n=1,outfile=None):
     """Generate <n> Sudokus and store them in the json file at <outfile>"""
 
