@@ -1,4 +1,9 @@
-import pygame
+"""LEGACY GUI application. This was used to make illustrations for the Matura Project.
+
+Basic and advanced Backtracking is Implemented."""
+
+
+mport pygame
 import sys
 from multiprocessing.pool import ThreadPool
 import threading

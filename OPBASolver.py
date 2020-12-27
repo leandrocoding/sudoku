@@ -1,5 +1,5 @@
 from config import Config as c, Temp as t
-from BASolver import check
+from BASolver2 import check
 from time import sleep
 import ujson
 import copy

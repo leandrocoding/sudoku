@@ -5,6 +5,7 @@ from gridcreater import retrive_json
 from time import sleep, perf_counter
 import XSolver as ds
 import BASolver as basicsolver
+import BASolver2 as bs2
 import OPBASolver as advsolve
 
 
@@ -58,15 +59,17 @@ def main(infile=None,outfile=None,n=None):
 def timeoutput(outfile, time, method, n):
     """Writes Measurements to <outfile>"""
     with open(outfile,"a+") as f:
-        f.write(f"Solved a set of sudokus {n} {'time' if n==1 else 'times'} in {time:.3f} Seconds using the {method} algorithm.\n\r")
+        f.write(f"Solved a set of sudokus in {time:.3f} Seconds using the {method} algorithm.\n\r")
+
+
 
 def executeMe1():
     """This gets executed with the profiler."""
-    infile = "sudoku100.json"
+    infile = "sudoku1.json"
     sudoku_set = retrive_json(infile)
     for sud in sudoku_set:
-        # normalBacktrack(sud)
-        advancedBacktrack(sud)
+        normalBacktrack(sud)
+        # advancedBacktrack(sud)
         # algox(sud)
 
 
@@ -93,9 +96,11 @@ def execute(sud_set,algorithm):
 
 def normalBacktrack(sud):
     """ Interface for Native Backtracking """
-    abc=[]  # This is where the Solutions get added to.
+    
     bo=ds.exact_to_matrix(9, sud)
-    basicsolver.solve(bo,sols=abc)
+    
+    bs2.bASolve(bo)
+    
 
 
 def advancedBacktrack(sud):
@@ -111,5 +116,7 @@ def algox(sud):
     ds.sudoku_solve(problem=sud)
 
 if __name__ == "__main__":
-    main(infile="finallSudoku1000.json",outfile="outsud/sut2.txt",n=1)
+    main(infile="finallSudoku1000.json",outfile="outsud/finalout.txt",n=1)
+    # main(infile="sudoku1.json",outfile="outsud/sut22.txt",n=1)
     # profiling()
+    # executeMe1()

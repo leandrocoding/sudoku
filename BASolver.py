@@ -30,32 +30,45 @@ for i in range(c.basesize**2+1):
 def check(num, row, col, bo):
     """Checks if it is possible to put a number at a certain point. (LEGACY)"""
     # Check Row
-    if num in bo[row]:
-        return False
-    # Check Col
-    for i in range(0, (c.basesize ** 2)):
-        if num == bo[i][col]:
+    for i in range(9):
+        if bo[i][col] ==num or bo[row][i] == num:
             return False
-    # Check Square
-    return checksquare(num, row, col, bo)
+    return checksquare(num,row,col,bo)
 
-    return True
+
+    # if num in bo[row]:
+    #     return False
+    # # Check Col
+    # for i in range(0, (c.basesize ** 2)):
+    #     if num == bo[i][col]:
+    #         return False
+    # # Check Square
+    # return checksquare(num, row, col, bo)
+
+    # return True
 
 
 def checksquare(num, row, col, bo):
     squarerow = math.floor(row/c.basesize)
     squarecol = math.floor(col/c.basesize)
-    rows = []
-    cols = []
-    for i in range(0, c.basesize):
-        rows.append(squarerow*c.basesize + i)
-        cols.append(squarecol*c.basesize + i)
-
-    for roww in rows:
-        for coll in cols:
-            if bo[roww][coll] == num:
+    for rown in range(3):
+        for coln in range(3):
+            if bo[squarerow*3 + rown][col] == num:
+                return False
+            if bo[row][squarecol*3 + coln] == num:
                 return False
     return True
+    # rows = []
+    # cols = []
+    # for i in range(0, c.basesize):
+    #     rows.append(squarerow*c.basesize + i)
+    #     cols.append(squarecol*c.basesize + i)
+
+    # for roww in rows:
+    #     for coll in cols:
+    #         if bo[roww][coll] == num:
+    #             return False
+    # return True
 
 
 def solutioncounter(bo, debug=False, fast=False):
@@ -157,3 +170,8 @@ def generateSudoku(seed=None, count=35, debug=False):
     gen(grid, seed=seed)
     removeFields(grid, count=count, seed=seed)
     return grid
+
+
+
+if __name__ == "__main__":
+    solve()
