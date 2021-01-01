@@ -3,11 +3,29 @@ from BASolver2 import check
 from time import sleep
 import ujson
 import copy
+class InvaldSudoku(Exception):
+    pass
 
+class NoNSolvable(Exception):
+    pass
 t.possibls=[]
 
+def OPSolverHandle(grid):
+    if any([not num<10 for row in grid for num in row]):
+        raise InvaldSudoku("Sudoku has value bigger than 9 ")
+    if len(grid)!=9 or len(grid[0])!=9:
+        raise InvaldSudoku("Sudoku is not Valid, it has to be 9x9")
+        return False
+    sols = []
+    solve(grid, sols)
+    grid = sols[0]
+    
+    if any([not 0<num<10 for row in grid for num in row]):
+        raise NoNSolvable("Sudoku could not be solved")
+
+    return grid
 def rowcoltoNum(row,col):
-    """Converts 2D cooridinate to a 1D coordinate""""
+    """Converts 2D cooridinate to a 1D coordinate"""
     return row*c.basesize**2+col
 def getLen(elem):
     """This function is used to Sort the fileds by possibilities."""

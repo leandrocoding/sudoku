@@ -1,5 +1,8 @@
+class InvaldSudoku(Exception):
+    pass
 
-
+class NoNSolvable(Exception):
+    pass
 def checksquare(num, i, j, grid):
     squarerow = i//3
     squarecol = j//3
@@ -33,8 +36,22 @@ def bASolve(grid):
                 return False
     return True
 
+def bASolverHandle(grid):
+    if any([not num<10 for row in grid for num in row]):
+        raise NoNSolvable("Sudoku could not be solved")
+    if len(grid)!=9 or len(grid[0])!=9:
+        raise InvaldSudoku("Sudoku is not Valid, it has to be 9x9")
+        return False
+    bASolve(grid)
+    
+    if any([not 0<num<10 for row in grid for num in row]):
+        raise NoNSolvable("Sudoku could not be solved")
+
+    return grid
+
+
+    
+
 
 if __name__ == "__main__":
-    gr = [[7, 8, 0, 4, 0, 0, 1, 2, 0], [6, 0, 0, 0, 7, 5, 0, 0, 9], [0, 0, 7, 0, 4, 0, 2, 6, 0], [9, 0, 4, 0, 6, 0, 0, 0, 5], [0, 0, 1, 0, 5,0, 9, 3, 0], [0, 0, 0, 6, 0, 1, 0, 7, 8], [0, 7, 0, 3, 0, 0, 0, 1, 2], [1, 2, 0, 0, 0, 7, 4, 0, 0], [0, 4, 9, 2, 0, 6, 0, 0, 7]]
-    bASolve(gr)
-    print(gr)
+    pass

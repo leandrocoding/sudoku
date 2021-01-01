@@ -94,6 +94,10 @@ def execute(sud_set,algorithm):
     return toc-tic
 
 
+def executenotime(sud_set,algorithm):
+    for sud in sud_set:
+        algorithm(sud)
+
 def normalBacktrack(sud):
     """ Interface for Native Backtracking """
     

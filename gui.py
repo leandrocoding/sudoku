@@ -3,7 +3,7 @@
 Basic and advanced Backtracking is Implemented."""
 
 
-mport pygame
+import pygame
 import sys
 from multiprocessing.pool import ThreadPool
 import threading
