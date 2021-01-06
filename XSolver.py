@@ -4,7 +4,7 @@ from itertools import chain, product
 from string import ascii_lowercase, ascii_uppercase
 
 
-from exactcover import Exactcover
+from exactcover import ExactcoverSolver as Exactcover
 from math import floor, sqrt
 
 DIGITS = "123456789" + ascii_lowercase + ascii_uppercase
