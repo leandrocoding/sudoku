@@ -26,7 +26,7 @@ This file will do the following when executed:
 1. This Sudoku will be solved by the three algorithms. It will always print the result to the console. 
 1. The time will be measured for the three Algorithms using performance.py
 
-To run the Tests for Correctness and finiteness run evaluations.py
+To run the Tests for Correctness and finiteness run evaluations.py   
 
 
 
@@ -34,15 +34,15 @@ To run the Tests for Correctness and finiteness run evaluations.py
 
 ## Extra
 
-You can run the Graphical Sover by executing gui.py.
-The Controls are the following:
-S: Solve Sudoku
-R: Reset Grid (Generates a new Sudoku)
-Arrowkeys: Move the Selector
-Mouse leftclick: Move Selector to mouse.
-Numbers 1-9: Set the corresponding Number in the field.
-Del: Clear the field.
-Ctrl / Shift: Change Solver (Only Native Backtracking Supported atm.)
+You can run the Graphical Sover by executing gui.py.   
+The Controls are the following:   
+S: Solve Sudoku   
+R: Reset Grid (Generates a new Sudoku)   
+Arrowkeys: Move the Selector   
+Mouse leftclick: Move Selector to mouse.   
+Numbers 1-9: Set the corresponding Number in the field.   
+Del: Clear the field.   
+Ctrl / Shift: Change Solver (Only Native Backtracking Supported atm.)   
 
 This Solver only supports the Native Backtracking algorithm at the moment.
 
