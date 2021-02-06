@@ -4,7 +4,7 @@ from itertools import chain, product
 from string import ascii_lowercase, ascii_uppercase
 
 
-from exactcover import ExactcoverSolver as Exactcover
+from exactcover import ExactcoverSolver
 from math import floor, sqrt
 
 DIGITS = "123456789" + ascii_lowercase + ascii_uppercase
@@ -49,7 +49,7 @@ def decode_sudoku_to_ascii(n, solution):
 
 # Solver
 
-def sudoku_solve(n=9, problem=(), m=None, random=False):
+def sudoku(n=9, problem=(), m=None, random=False):
     if m is None:
         m = int(floor(sqrt(n)))
     if n <= 0 or len(DIGITS) < n or n % m:
@@ -60,7 +60,7 @@ def sudoku_solve(n=9, problem=(), m=None, random=False):
     constraints = {(i, j, d): ((i, j), (d, "row", i), (d, "col", j), (d, "block",
                                                                       i // m, j//(n//m))) for i, j, d in product(range(n), range(n), DIGITS[:n])}
 
-    return Exactcover(constraints, problem, random)
+    return ExactcoverSolver(constraints, problem, random)
 
 
 def matrix_to_exact(grid):

@@ -117,7 +117,8 @@ def testAlgoX():
 
 
 if __name__ == "__main__":
-    # testBA()
-    # testOP()
-    print(bASolverHandle([[0 for _ in range(9)] for _ in range(9)]))
+    testBA()
+    testOP()
+    testAlgoX()
+    # print(bASolverHandle([[0 for _ in range(9)] for _ in range(9)]))
     

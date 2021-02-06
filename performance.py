@@ -114,14 +114,15 @@ def advancedBacktrack(sud):
     abc=[]
     bo= ds.exact_to_matrix(9, sud)
     advsolve.solveadv(bo,sols=abc)
+    return abc
 
 def algox(sud):
     """ Interface for Algorithm X """
 
-    ds.sudoku_solve(problem=sud)
+    ds.sudoku(problem=sud)
 
 if __name__ == "__main__":
-    main(infile="finallSudoku1000.json",outfile="outsud/finalout.txt",n=1)
-    # main(infile="sudoku1.json",outfile="outsud/sut22.txt",n=1)
+    # main(infile="finallSudoku1000.json",outfile="outsud/finalout.txt",n=1)
+    main(infile="sudoku1.json",outfile="outsud/sut22.txt",n=1)
     # profiling()
     # executeMe1()

@@ -1,5 +1,5 @@
 from config import Config as c, Temp as t
-from BASolver2 import check
+from BASolver2 import check, bASolverHandle as handleAdv
 from time import sleep
 import ujson
 import copy
@@ -62,6 +62,9 @@ def newPossiFinder(bo,i,j):
     return out
 
 
+
+def advHandel(grid):
+    return handleAdv(grid)
 def findPossi(bo):
     """ Find all possibilities for all fields and add them to a list."""
     possis = []

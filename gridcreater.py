@@ -10,7 +10,7 @@ import BASolver as solver
 import exactcover
 from XSolver import decode_sudoku_to_ascii
 from makesud import make_sudoku
-import pickle  # Legacy
+# import pickle  # Legacy
 import ujson
 
 
@@ -33,12 +33,12 @@ def gen(n=1,outfile=None):
     return sudlist
 
 
-def retrive_pickle(infile):
-    """Retrieve Sudokus form pickle file. (LEGACY, use retrive_json when possible)"""
-    with open(infile, 'rb') as pickle_file:
-        sudlist= pickle.load(pickle_file)
+# def retrive_pickle(infile):
+#     """Retrieve Sudokus form pickle file. (LEGACY, use retrive_json when possible)"""
+#     with open(infile, 'rb') as pickle_file:
+#         sudlist= pickle.load(pickle_file)
 
-    return sudlist
+#     return sudlist
 
 def retrive_json(infile):
     """Retrieve Sudokus form json file."""

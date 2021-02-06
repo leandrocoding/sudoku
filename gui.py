@@ -11,14 +11,16 @@ import copy
 
 from BASolver import solve
 from config import Config as c, Temp as t, Solvertype
-from XSolver import solveadv
+from OPBASolver import solveadv
+import XSolver
+import makesud
 
 
 
 # ***************Testing Config****************
-from testGrids import Grids
-t.currGrid = copy.deepcopy(Grids.grid9x9_1)
-
+# from testGrids import Grids
+# t.currGrid = copy.deepcopy(Grids.grid9x9_1)
+t.currGrid = XSolver.exact_to_matrix(9, makesud.make_sudoku())
 # ****************End of Config****************
 
 def run():
@@ -36,7 +38,7 @@ def mainloop():
 
 
 def resetGrid():
-    t.currGrid = copy.deepcopy(Grids.gridBases[c.basesize]["Easy1"])
+    t.currGrid = XSolver.exact_to_matrix(9, makesud.make_sudoku())
     # print(findPossi(t.currGrid))
 
 def setup():
@@ -149,6 +151,9 @@ def setSelector(row, col):
     t.selector_pos[0] = int(row)
     t.selector_pos[1] = int(col)
 
+def changeselected(tonum):
+    t.currGrid[t.selector_pos[1]][t.selector_pos[0]] = tonum
+
 
 def mouseSelect():
     pos = pygame.mouse.get_pos()
@@ -170,19 +175,19 @@ def givenChecker(grid):
                 given.append((ro, co))
 
 
-def guiSolve(bo):
-    solutions = []
-    # solve(t.currGrid, sols=solutions)
-    solveadv(t.currGrid, sols=solutions)
+# def guiSolve(bo):
+#     solutions = []
+#     # solve(t.currGrid, sols=solutions)
+#     solveadv(t.currGrid, sols=solutions)
 
-    bo = solutions[0]
-    print("Solved")
-    print(bo)
+#     bo = solutions[0]
+#     print("Solved")
+#     print(bo)
 
-    if len(solutions) == 0:
-        print("There was no solution!")
-        return bo
-    return solutions[0]
+#     if len(solutions) == 0:
+#         print("There was no solution!")
+#         return bo
+#     return solutions[0]
 
 
 def setCurrGrid(ret):
@@ -194,8 +199,8 @@ def solveselect(curr,abc=None):
     if c.solver==Solvertype.backnorm:
         return solve(curr,abc)
 
-    elif c.solver==Solvertype.backadv:
-        return solveadv(curr,abc)
+    # elif c.solver==Solvertype.backadv:
+    #     return solveadv(curr,abc)
     else:
         print("Not implemented at the Moment. \n Coming soon!")
         return t.currGrid
@@ -262,6 +267,28 @@ def controlls(event):
 
         # Num input
         # TODO Input for numbers
+        if event.key == pygame.K_1:
+            changeselected(1)
+        if event.key == pygame.K_2:
+            changeselected(2)
+        if event.key == pygame.K_3:
+            changeselected(3)
+        if event.key == pygame.K_4:
+            changeselected(4)
+        if event.key == pygame.K_5:
+            changeselected(5)
+        if event.key == pygame.K_6:
+            changeselected(6)
+        if event.key == pygame.K_7:
+            changeselected(7)
+        if event.key == pygame.K_8:
+            changeselected(8)
+        if event.key == pygame.K_9:
+            changeselected(9)
+        if event.key == pygame.K_DELETE or event.key == pygame.K_0:
+            changeselected(0)
+        
+
         #
 
         if event.key == pygame.K_s:
