@@ -49,7 +49,7 @@ def newPossiFinder(bo,i,j):
     for k in range(9):
         pickable[bo[i][k]] = False
     for k in range(9):
-        pickable[bo[k][i]] = False
+        pickable[bo[k][j]] = False
 
     r = j//3
     c = i//3
@@ -111,8 +111,9 @@ def solve(bo,sols=None):
                     return True
                 bo[row][col] = 0
         return True
-  if sum([0 if reduce(lambda x, y: x*y, boelem)!=0 else 1 for boelem in bo])!=0
-    reduce(lambda x, y: x*y, bo)
+#   if sum([0 if reduce(lambda x, y: x*y, boelem)!=0 else 1 for boelem in bo])!=0:
+
+    # reduce(lambda x, y: x*y, bo)
 
 
     # Here ujson.loads(ujson.dumps()) is used because it is much faster than copy.deepcopy() to make a copy of a list.
