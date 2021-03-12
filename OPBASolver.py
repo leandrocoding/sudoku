@@ -3,6 +3,7 @@ from BASolver2 import check, bASolverHandle as handleAdv
 from time import sleep
 import ujson
 import copy
+from functools import reduce
 class InvaldSudoku(Exception):
     pass
 
@@ -93,9 +94,10 @@ def solveadv(bo,sols=None):
 def solve(bo,sols=None):
     """Solve Sudoku with Optimized Backtracking algorithm"""
 
-    findPossi(bo)
+    
 
-    posib=t.possibls
+    posib=findPossi(bo)
+    print(posib)
 
     for posi in posib:
         ns=posi[0]
@@ -109,6 +111,9 @@ def solve(bo,sols=None):
                     return True
                 bo[row][col] = 0
         return True
+  if sum([0 if reduce(lambda x, y: x*y, boelem)!=0 else 1 for boelem in bo])!=0
+    reduce(lambda x, y: x*y, bo)
+
 
     # Here ujson.loads(ujson.dumps()) is used because it is much faster than copy.deepcopy() to make a copy of a list.
     sols.append(ujson.loads(ujson.dumps(bo)))

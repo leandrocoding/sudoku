@@ -107,8 +107,10 @@ def solve(bo, sols=None, fast=False):
                         bo[row][col] = n
                         # if showSteps:
                         # sleep(sleeptimer)
+                        sleep(0.001)
                         solve(bo, sols)
                         bo[row][col] = 0
+                        
                 return
 
     # print(np.matrix(bo))
