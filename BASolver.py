@@ -25,7 +25,7 @@ for i in range(c.basesize**2+1):
 
 
 # Checking if it is possible to put a number at a certain point.
-
+stepcount = 0
 
 def check(num, row, col, bo):
     """Checks if it is possible to put a number at a certain point. (LEGACY)"""
@@ -91,6 +91,8 @@ def solutioncounter(bo, debug=False, fast=False):
 
 
 def solve(bo, sols=None, fast=False):
+    global stepcount
+    stepcount += 1
     # sleeptimer = c.sleeptime
     sleeptimer=0
     # if fast:
@@ -115,6 +117,7 @@ def solve(bo, sols=None, fast=False):
 
     # print(np.matrix(bo))
     sols.append(ujson.loads(ujson.dumps(bo)))
+    print(stepcount)
 
 
 def isSolved(bo):
