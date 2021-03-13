@@ -26,7 +26,7 @@ for i in range(c.basesize**2+1):
 
 # Checking if it is possible to put a number at a certain point.
 stepcount = 0
-
+BACont = True
 def check(num, row, col, bo):
     """Checks if it is possible to put a number at a certain point. (LEGACY)"""
     # Check Row
@@ -100,8 +100,10 @@ def solve(bo, sols=None, fast=False):
     global currGrid
     currGrid = bo
 
+
     for row in range(0, c.basesize**2):
         for col in range(0, c.basesize**2):
+            
             # Find empty field
             if bo[row][col] == 0:
                 for n in range(1, c.basesize**2+1):
@@ -179,4 +181,8 @@ def generateSudoku(seed=None, count=35, debug=False):
 
 
 if __name__ == "__main__":
-    solve()
+    abc = []
+    testgrid = [[3, 4, 0, 0, 1, 0, 9, 0, 0], [0, 0, 1, 0, 0, 4, 0, 8, 3], [5, 0, 0, 0, 0, 0, 0, 1, 0], [9, 1, 0, 0, 5, 0, 0, 0, 0], [0, 6, 4, 0, 0, 0, 1, 3, 0], [0, 0, 0, 0, 8, 0, 0, 4, 9], [0, 8, 0, 0, 0, 0, 0, 0, 2], [2, 3, 0, 9, 0, 0, 4, 0, 0], [0, 0, 9, 0, 4, 0, 0, 5, 8]]
+
+    solve(testgrid,abc)
+    print(testgrid)
