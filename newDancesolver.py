@@ -163,7 +163,7 @@ def DLSearch(k, masterNode, matrix):
 
 def addNodeToBottomOfAColumn(nodeToAdd, columnTop):
     temp = columnTop
-    while temp.down != None and temp.down != columnTop:
+    while temp.down is not None and temp.down != columnTop:
         temp = temp.down
     temp.down = nodeToAdd
     nodeToAdd.up = temp
