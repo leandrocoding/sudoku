@@ -28,6 +28,8 @@ import makesud
 
 t.currGrid = [[3, 4, 0, 0, 1, 0, 9, 0, 0], [0, 0, 1, 0, 0, 4, 0, 8, 3], [5, 0, 0, 0, 0, 0, 0, 1, 0], [9, 1, 0, 0, 5, 0, 0, 0, 0], [0, 6, 4, 0, 0, 0, 1, 3, 0], [0, 0, 0, 0, 8, 0, 0, 4, 9], [0, 8, 0, 0, 0, 0, 0, 0, 2], [2, 3, 0, 9, 0, 0, 4, 0, 0], [0, 0, 9, 0, 4, 0, 0, 5, 8]]
 print(t.currGrid)
+
+drawingselector = True
 # ****************End of Config****************
 
 def run():
@@ -144,7 +146,9 @@ def draw(grid):
     draw_field()
     draw_num(grid)
     draw_footer()
-    draw_selector()
+    if drawingselector:
+
+        draw_selector()
     pygame.display.update()
 
 
@@ -252,6 +256,10 @@ def modifysleeptime(dirr):
     pygame.display.set_caption(f"Sudoku  Sleeptime: {c.sleeptime:.2f}s")
 
 
+def toggledrawingselector():
+    global drawingselector
+    drawingselector = not drawingselector
+
 def eventHandler(event):
     if event.type == pygame.QUIT:
         global running
@@ -290,6 +298,8 @@ def controlls(event):
             modifysleeptime(-0.02)
         if event.key == pygame.K_PERIOD:
             modifysleeptime(0.02)
+        if event.key == pygame.K_u:
+            toggledrawingselector()
 
 
 
