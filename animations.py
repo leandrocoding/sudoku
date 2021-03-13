@@ -10,7 +10,9 @@ import threading
 import copy
 
 from BASolver import solve
-from config import Config as c, Temp as t, Solvertype
+from newBA import backtrackNew as backNew
+from newDancesolver import dancingLinks
+from config import activeConfig as c, Temp as t, Solvertype
 # from OPBASolver import solveadv
 from newOPBA import bfs
 import XSolver
@@ -43,7 +45,9 @@ def mainloop():
 
 
 def resetGrid():
-    t.currGrid = XSolver.exact_to_matrix(9, makesud.make_sudoku())
+    # t.currGrid = XSolver.exact_to_matrix(9, makesud.make_sudoku())
+    t.currGrid = [[3, 4, 0, 0, 1, 0, 9, 0, 0], [0, 0, 1, 0, 0, 4, 0, 8, 3], [5, 0, 0, 0, 0, 0, 0, 1, 0], [9, 1, 0, 0, 5, 0, 0, 0, 0], [0, 6, 4, 0, 0, 0, 1, 3, 0], [0, 0, 0, 0, 8, 0, 0, 4, 9], [0, 8, 0, 0, 0, 0, 0, 0, 2], [2, 3, 0, 9, 0, 0, 4, 0, 0], [0, 0, 9, 0, 4, 0, 0, 5, 8]]
+
     # print(findPossi(t.currGrid))
 
 def setup():
@@ -123,6 +127,8 @@ def draw_footer():
     textRe = text.get_rect()
     textRect = textRe.move((0,c.resolutionField+round(c.spacebelowinPX/3)))
     root.blit(text, textRect)
+    
+
 
 
 def draw_selector():
@@ -203,11 +209,15 @@ def setCurrGrid(ret):
 def solveselect(curr,abc=None):
     c.solver=Solvertype.solvers[c.currsolverindex]
     if c.solver==Solvertype.backnorm:
-        return solve(curr,abc)
+        # return solve(curr,abc)
+        return backNew(curr)
 
     elif c.solver==Solvertype.backadv:
         # return solveadv(curr,abc)
         return bfs(curr)
+    elif c.solver==Solvertype.dancinglinks:
+        # return solveadv(curr,abc)
+        return dancingLinks(curr)
     else:
         print("Not implemented at the Moment. \n Coming soon!")
         return t.currGrid
@@ -230,6 +240,17 @@ def changeSolver(dir):
     c.currsolverindex=newindex
 
 # Eventhandling
+
+
+
+def modifysleeptime(dirr):
+    newtime = c.sleeptime + dirr
+    if newtime>=0:
+        c.sleeptime = newtime
+    else:
+        c.sleeptime = 0
+    pygame.display.set_caption(f"Sudoku  Sleeptime: {c.sleeptime:.2f}s")
+
 
 def eventHandler(event):
     if event.type == pygame.QUIT:
@@ -265,6 +286,11 @@ def controlls(event):
             changeSolver(-1)
         if event.key == pygame.K_LSHIFT:
             changeSolver(1)
+        if event.key == pygame.K_COMMA:
+            modifysleeptime(-0.02)
+        if event.key == pygame.K_PERIOD:
+            modifysleeptime(0.02)
+
 
 
         #     pooll = ThreadPool(processes=1)

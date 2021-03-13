@@ -7,10 +7,11 @@ timetosleep = 0
 bfsCont = True
 
 class EntryData:
-    def __init__(self, row, col, choices):
+    def __init__(self, row, col, choices, choicesList = []):
         self.row = row
         self.col = col
         self.choices = choices
+        self.choicesList = choicesList
     
     def setData(self, row, col, choices, choicesList = []):
         self.row = row
@@ -50,11 +51,11 @@ def countChoices(matrix, i, j):
     # return out
 
 
-def bfs(matrix):
+def backtrackNew(matrix):
     global bfsCont, stepcount
     stepcount = 0
     bfsCont = True
-    solveSudokuBFSHelper(matrix)
+    solveSudokuBacktrackHelper(matrix)
     print(stepcount)
 
 def canBeCorrect(matrix, row, col):
@@ -77,31 +78,44 @@ def canBeCorrect(matrix, row, col):
                 return False
     return True
 
+def findEmpty(matrix):
+    for i in range(9):
+        for j in range(9):
+            if matrix[i][j] == 0:
+                # numChoices, choicesList = countChoices(matrix, i, j)
+                
+                return EntryData(i, j, 1)
+                # if currCandidate.choices > numChoices:
+                #     currCandidate.setData(i, j, numChoices, choicesList)
+    return EntryData(-1, -1, 100)
 
-def solveSudokuBFSHelper(matrix):
+
+
+def solveSudokuBacktrackHelper(matrix):
 
     global bfsCont, stepcount
     stepcount += 1
     if not bfsCont:
         return
     
-    bestCandidate = EntryData(-1, -1, 100)
-    for i in range(9):
-        for j in range(9):
-            if matrix[i][j] == 0:
-                numChoices, choicesList = countChoices(matrix, i, j)
-                if bestCandidate.choices > numChoices:
-                    bestCandidate.setData(i, j, numChoices, choicesList)
+    # bCandidate = EntryData(-1, -1, 100)
+    # for i in range(9):
+    #     for j in range(9):
+    #         if matrix[i][j] == 0:
+    #             numChoices, choicesList = countChoices(matrix, i, j)
+    #             if currCandidate.choices > numChoices:
+    #                 currCandidate.setData(i, j, numChoices, choicesList)
+    currCandidate = findEmpty(matrix)
     
-    if bestCandidate.choices == 100:
+    if currCandidate.choices == 100:
         
         bfsCont = False
         return
-    row = bestCandidate.row
-    col = bestCandidate.col
+    row = currCandidate.row
+    col = currCandidate.col
 
-    # for j in range(1,10):
-    for j in bestCandidate.choicesList:
+    for j in range(1,10):
+    # for j in currCandidate.choicesList:
 
 
         if not bfsCont:
@@ -110,17 +124,17 @@ def solveSudokuBFSHelper(matrix):
 
         time.sleep(c.sleeptime)
         if canBeCorrect(matrix, row, col):
-            solveSudokuBFSHelper(matrix)
+            solveSudokuBacktrackHelper(matrix)
     if not bfsCont:
         
         return
     matrix[row][col] = 0
-    
+    time.sleep(timetosleep)
 
 
 
 
 if __name__ == "__main__":
     testgrid = [[3, 4, 0, 0, 1, 0, 9, 0, 0], [0, 0, 1, 0, 0, 4, 0, 8, 3], [5, 0, 0, 0, 0, 0, 0, 1, 0], [9, 1, 0, 0, 5, 0, 0, 0, 0], [0, 6, 4, 0, 0, 0, 1, 3, 0], [0, 0, 0, 0, 8, 0, 0, 4, 9], [0, 8, 0, 0, 0, 0, 0, 0, 2], [2, 3, 0, 9, 0, 0, 4, 0, 0], [0, 0, 9, 0, 4, 0, 0, 5, 8]]
-    bfs(testgrid)
+    backtrackNew(testgrid)
     print(testgrid)

@@ -28,3 +28,9 @@ class Config(object):
 class Temp(object):
     currGrid=None
     pygameActive=False
+
+
+
+
+
+activeConfig = Config()
