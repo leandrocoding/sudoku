@@ -9,7 +9,7 @@ from multiprocessing.pool import ThreadPool
 import threading
 import copy
 
-from BASolver import solve
+
 from newBA import backtrackNew as backNew
 from newDancesolver import dancingLinks
 from config import activeConfig as c, Temp as t, Solvertype
@@ -298,6 +298,7 @@ def controlls(event):
             modifysleeptime(-0.02)
         if event.key == pygame.K_PERIOD:
             modifysleeptime(0.02)
+            
         if event.key == pygame.K_u:
             toggledrawingselector()
 

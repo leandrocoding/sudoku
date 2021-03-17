@@ -73,7 +73,7 @@ def canBeCorrect(matrix, row, col):
     r = row // 3
     c = col // 3
     for i in range(r * 3, r * 3 + 3):
-        for j in range(c * 3, c * 3 + 1):
+        for j in range(c * 3, c * 3 + 3):
             if (row != i or col != j) and matrix[i][j] != 0 and matrix[i][j] == matrix[row][col]:
                 return False
     return True
