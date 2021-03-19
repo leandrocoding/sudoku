@@ -11,7 +11,7 @@
 class Solvertype:
     backnorm="Backtracking Normal"
     backadv="Backtracking optimized"
-    dancinglinks="Dancinglinks Algorythm X"
+    dancinglinks="Dancinglinks Algorithm X"
 
     solvers= [backnorm,backadv,dancinglinks]
 

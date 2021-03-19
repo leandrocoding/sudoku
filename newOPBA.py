@@ -72,7 +72,7 @@ def canBeCorrect(matrix, row, col):
     r = row // 3
     c = col // 3
     for i in range(r * 3, r * 3 + 3):
-        for j in range(c * 3, c * 3 + 1):
+        for j in range(c * 3, c * 3 + 3):
             if (row != i or col != j) and matrix[i][j] != 0 and matrix[i][j] == matrix[row][col]:
                 return False
     return True
@@ -109,8 +109,8 @@ def solveSudokuBFSHelper(matrix):
         matrix[row][col] = j
 
         time.sleep(c.sleeptime)
-        if canBeCorrect(matrix, row, col):
-            solveSudokuBFSHelper(matrix)
+        # if canBeCorrect(matrix, row, col):
+        solveSudokuBFSHelper(matrix)
     if not bfsCont:
         
         return
@@ -122,5 +122,7 @@ def solveSudokuBFSHelper(matrix):
 
 if __name__ == "__main__":
     testgrid = [[3, 4, 0, 0, 1, 0, 9, 0, 0], [0, 0, 1, 0, 0, 4, 0, 8, 3], [5, 0, 0, 0, 0, 0, 0, 1, 0], [9, 1, 0, 0, 5, 0, 0, 0, 0], [0, 6, 4, 0, 0, 0, 1, 3, 0], [0, 0, 0, 0, 8, 0, 0, 4, 9], [0, 8, 0, 0, 0, 0, 0, 0, 2], [2, 3, 0, 9, 0, 0, 4, 0, 0], [0, 0, 9, 0, 4, 0, 0, 5, 8]]
+    tic= time.perf_counter()
     bfs(testgrid)
+    toc = time.perf_counter()
     print(testgrid)

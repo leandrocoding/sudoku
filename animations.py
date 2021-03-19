@@ -6,8 +6,7 @@ Basic and advanced Backtracking is Implemented."""
 import pygame
 import sys
 from multiprocessing.pool import ThreadPool
-import threading
-import copy
+
 
 
 from newBA import backtrackNew as backNew
@@ -27,7 +26,7 @@ import makesud
 
 
 t.currGrid = [[3, 4, 0, 0, 1, 0, 9, 0, 0], [0, 0, 1, 0, 0, 4, 0, 8, 3], [5, 0, 0, 0, 0, 0, 0, 1, 0], [9, 1, 0, 0, 5, 0, 0, 0, 0], [0, 6, 4, 0, 0, 0, 1, 3, 0], [0, 0, 0, 0, 8, 0, 0, 4, 9], [0, 8, 0, 0, 0, 0, 0, 0, 2], [2, 3, 0, 9, 0, 0, 4, 0, 0], [0, 0, 9, 0, 4, 0, 0, 5, 8]]
-print(t.currGrid)
+# print(t.currGrid)
 
 drawingselector = True
 # ****************End of Config****************
@@ -174,8 +173,9 @@ def mouseSelect():
     pos = pygame.mouse.get_pos()
     x_mouse = pos[0]
     y_mouse = pos[1]
-    if y_mouse > c.resolutionField:
+    if y_mouse > c.resolutionField-5 or x_mouse > c.resolutionField-5:
         return
+
     col = x_mouse//(c.resolutionField//c.basesize**2)
     row = y_mouse//(c.resolutionField//c.basesize**2)
     setSelector(row, col)
@@ -301,6 +301,12 @@ def controlls(event):
             
         if event.key == pygame.K_u:
             toggledrawingselector()
+        # Output current grid in console
+        if event.key == pygame.K_p:
+            print(t.currGrid)
+        if event.key == pygame.K_i:
+            print("Saving to disk")
+            pygame.image.save(root, f"Image 111.png")
 
 
 
